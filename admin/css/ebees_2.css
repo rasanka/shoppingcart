@@ -1,0 +1,138 @@
+.ddd {font-family: Tahoma;font-size: 11px;}
+
+.TNtext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	line-height: 18px;
+
+
+}
+.TNtext1 {
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 11px;
+}
+.THtext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000066;
+}
+.THtextinfo {
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 11px;
+	font-weight: bold;
+	color: #0D1052;
+}
+.Textinfo1 {
+	font-family: Tahoma, Verdana, Arial;
+	line-height: 17px;
+	font-size: 11px;
+	text-align: justify;
+
+}
+.TRdetails {
+	font-family: Verdana;
+	font-size: 10px;
+	text-align: justify;
+	line-height: 14px;
+
+
+}
+
+.FormFormat {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #000000;
+
+	}
+.Smalltext1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #081052;
+	font-weight: bold;
+}
+.SecuText {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000000;
+	text-align: justify;
+	line-height: 14px;
+
+}
+.TNtext3 {
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 11px;
+}
+body {
+	margin: 0px;
+
+
+}
+.Tborder {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: C6C7DE;
+	border-right-color: C6C7DE;
+	border-bottom-color: C6C7DE;
+	border-left-color: C6C7DE;
+}
+.TbottomBG {
+	background-color: #FFFFFF;
+	background-image: url(line_bg.gif);
+	background-repeat: repeat-x;
+}
+.DottedBorder {
+	background-color: #FFFFFF;
+	background-image: url(dotted_border_tc.gif);
+	background-repeat: repeat;
+}
+a:link {
+	text-decoration: none;
+	color: #426889;
+
+}
+a:hover {
+	#text-decoration: underline overline;
+	color: #426889;
+
+}
+a:visited {
+	text-decoration: none;
+	color: #426889;
+
+}
+a:active {
+	text-decoration: none;
+	color: #426889;
+
+}
+.TCTEXT {
+	font-family: Tahoma, Arial, Verdana;
+	font-size: 11px;
+	color: #000066;
+
+}
+.Topictext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+}
+.TextSelect {
+	border: 1px solid #000000;
+	font-family: Tahoma;
+	font-size: 11px;
+	background-color: #FFFFFF;
+
+
+}
+select {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}

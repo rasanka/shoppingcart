@@ -1,0 +1,25 @@
+/* Sample PopBox CSS Classes */
+
+.PopBoxImageSmall
+{
+	border: none 0px #ffffff;
+	cursor: url("images/magplus.cur"), pointer;
+}
+.PopBoxImageLarge
+{
+	border: solid 2px #999999;
+	cursor: url("images/magminus.cur"), pointer;
+}
+.PopBoxImageShrink
+{
+	cursor: url("images/magminus.cur"), pointer;
+}
+.PopBoxImageLink
+{
+	cursor: pointer;
+}
+.PopBoxImageMove
+{
+	border: none 0px #ffffff;
+	cursor: pointer;
+}
