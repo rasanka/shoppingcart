@@ -8,7 +8,7 @@ class Item extends DB_Manager {
 	
 		$query = "  SELECT item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge
 					FROM tbl_items
-					WHERE item_id = ".$item_id." and status = 'SHOW'; ";
+					WHERE item_id = '".$item_id."' and status = 'SHOW'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -35,7 +35,7 @@ class Item extends DB_Manager {
 	
 		$query = "  SELECT seq_id,image_name
 					FROM tbl_item_images
-					WHERE item_id = ".$item_id."
+					WHERE item_id = '".$item_id."'
 					ORDER BY seq_id; ";
 				 
 		$result = "";
@@ -60,7 +60,7 @@ class Item extends DB_Manager {
 	
 		$query = "  SELECT image_name
 					FROM tbl_item_images
-					WHERE item_id = ".$item_id." AND seq_id = 1; ";
+					WHERE item_id = '".$item_id."' AND seq_id = 1; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -78,7 +78,7 @@ class Item extends DB_Manager {
 	
 		$query = "  SELECT item_id,item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge
 					FROM tbl_items
-					WHERE item_prod = ".$prod_id." and status = 'SHOW'; ";
+					WHERE item_prod = '".$prod_id."' and status = 'SHOW'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	

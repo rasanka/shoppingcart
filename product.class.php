@@ -8,7 +8,7 @@ class Product extends DB_Manager {
 	
 		$query = "  SELECT prod_name,prod_cat,prod_brand,ref_id
 					FROM tbl_products
-					WHERE prod_id = ".$prod_id." and status = 'SHOW'; ";
+					WHERE prod_id = '".$prod_id."' and status = 'SHOW'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -29,7 +29,7 @@ class Product extends DB_Manager {
 	
 		$query = "  SELECT seq_id,image_name
 					FROM tbl_product_images
-					WHERE prod_id = ".$prod_id."
+					WHERE prod_id = '".$prod_id."'
 					ORDER BY seq_id; ";
 				 
 		$result = "";
@@ -54,7 +54,7 @@ class Product extends DB_Manager {
 	
 		$query = "  SELECT image_name
 					FROM tbl_product_images
-					WHERE prod_id = ".$prod_id." AND seq_id = 1; ";
+					WHERE prod_id = '".$prod_id."' AND seq_id = 1; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -72,7 +72,7 @@ class Product extends DB_Manager {
 	
 		$query = "  SELECT prod_id,prod_name,prod_cat,prod_brand,ref_id
 					FROM tbl_products
-					WHERE prod_cat = ".$cat_id." and status = 'SHOW'; ";
+					WHERE prod_cat = '".$cat_id."' and status = 'SHOW'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -186,7 +186,7 @@ class Product extends DB_Manager {
 	
 		$query = "  SELECT prod_id,prod_name,prod_cat,prod_brand,ref_id
 					FROM tbl_products
-					WHERE prod_cat = ".$cat_id." AND prod_brand = ".$brand_id." and status = 'SHOW'; ";
+					WHERE prod_cat = '".$cat_id."' AND prod_brand = '".$brand_id."' and status = 'SHOW'; ";
 					
 		$this -> logData($query);
 				 

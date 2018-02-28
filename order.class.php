@@ -10,7 +10,7 @@ class Order extends DB_Manager {
                     delivery_company, delivery_email, delivery_contact, delivery_address, delivery_note,
                     payment_method, order_datetime, order_status
 					FROM tbl_orders
-					WHERE order_id = ".$order_id."; ";
+					WHERE order_id = '".$order_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -47,7 +47,7 @@ class Order extends DB_Manager {
 		$query = "  SELECT order_id, cart_id, cart_total, tax_amount, order_total, 
                     payment_method, order_datetime, order_status
 					FROM tbl_orders
-					WHERE user_id = ".$user_id."; ";
+					WHERE user_id = '".$user_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -79,7 +79,7 @@ class Order extends DB_Manager {
 	
 		$query = "  SELECT count(*)
 					FROM tbl_orders
-					WHERE order_id = ".$order_id." AND cart_id = ".$cart_id."; ";
+					WHERE order_id = '".$order_id."' AND cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);
@@ -98,7 +98,7 @@ class Order extends DB_Manager {
                     billing_name, billing_company, billing_email, billing_contact, billing_address, 
                     delivery_name, delivery_company, delivery_email, delivery_contact, delivery_address, delivery_note, 
                     payment_method, order_datetime, order_status) 
-                    VALUES(".$cart_id.",".$user_id.",".$cart_total.",".$tax.",".$order_total.",'".
+                    VALUES('".$cart_id."','".$user_id."',".$cart_total.",".$tax.",".$order_total.",'".
                     $billing_name."','".$billing_company."','".$billing_email."','".$billing_contact."','".
                     $billing_addr."','".$delivery_name."','".$delivery_company."','".$delivery_email."','".
                     $delivery_contact."','".$delivery_addr."','".$delivery_note."','".$pay_method."',now(),'".$status."'); ";
@@ -113,7 +113,7 @@ class Order extends DB_Manager {
 
         $query = "  UPDATE tbl_orders
                     SET order_status = '".$status."'
-                    WHERE order_id = ".$order_id."; ";
+                    WHERE order_id = '".$order_id."'; ";
 
         $result = $this -> executeUpdateQuery($query);
         return $result;

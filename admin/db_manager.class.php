@@ -2,6 +2,10 @@
 require_once("config/config.php");
 
 class DB_Manager {
+
+	function getUID($prefix) {
+		return uniqid($prefix);
+	}
 	
 	function getDBConnection(){
 		

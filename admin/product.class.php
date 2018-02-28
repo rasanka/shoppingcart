@@ -14,8 +14,8 @@ class Product extends DB_Manager{
 			
 	function saveProduct($name,$cat_id,$brand_id,$ref_id,$status){
 	
-		$query = " INSERT INTO tbl_products (prod_name,prod_cat,prod_brand,ref_id,status)
-				   VALUES('".$name."',".$cat_id.", ".$brand_id.", '".$ref_id."','".$status."');  ";
+		$query = " INSERT INTO tbl_products (prod_id,prod_name,prod_cat,prod_brand,ref_id,status)
+				   VALUES('".$this -> getUID('P')."','".$name."','".$cat_id."', '".$brand_id."', '".$ref_id."','".$status."');  ";
 			 
 		//$this -> logData($query);
 
@@ -28,7 +28,7 @@ class Product extends DB_Manager{
 	function saveProductImage($prod_id,$seq_id,$name){
 	
 		$query = " INSERT INTO tbl_product_images (prod_id, seq_id, image_name)
-				   VALUES(".$prod_id.", ".$seq_id.", '".$name."');  ";
+				   VALUES('".$prod_id."', ".$seq_id.", '".$name."');  ";
 
 		//$this -> logData($query);
 			 
@@ -48,11 +48,11 @@ class Product extends DB_Manager{
 	
 		$query = "  UPDATE tbl_products
 					SET prod_name = '".$name."',
-						prod_cat = ".$cat_id.",
-						prod_brand = ".$brand_id.",
+						prod_cat = '".$cat_id."',
+						prod_brand = '".$brand_id."',
 						status = '".$status."'
 					WHERE 
-						prod_id = ".$id.";  ";
+						prod_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeUpdateQuery($query);
@@ -70,7 +70,7 @@ class Product extends DB_Manager{
 	function deleteProduct($id){
 	
 		$query = "  DELETE FROM tbl_products
-					WHERE prod_id = ".$id.";  ";
+					WHERE prod_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -87,7 +87,7 @@ class Product extends DB_Manager{
 	function deleteProductImages($id){
 	
 		$query = "  DELETE FROM tbl_product_images
-					WHERE prod_id = ".$id.";  ";
+					WHERE prod_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -105,7 +105,7 @@ class Product extends DB_Manager{
 	
 		$query = "  SELECT prod_name,prod_cat,prod_brand,ref_id,status 
 					FROM tbl_products
-					WHERE prod_id = ".$id."; ";
+					WHERE prod_id = '".$id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -124,7 +124,7 @@ class Product extends DB_Manager{
 	}
 
 	function getProductImages($pid){
-		$query = " SELECT image_name FROM tbl_product_images WHERE prod_id = ".$pid." ORDER BY seq_id;  ";
+		$query = " SELECT image_name FROM tbl_product_images WHERE prod_id = '".$pid."' ORDER BY seq_id;  ";
 				 
 		$result = $this -> executeQuery($query);
 			 		
@@ -135,7 +135,7 @@ class Product extends DB_Manager{
 		
 		$query = "  SELECT prod_id, prod_name, ref_id, created_date
 					FROM tbl_products
-					WHERE prod_cat = ".$cat_id." AND prod_brand = ".$brand."
+					WHERE prod_cat = '".$cat_id."' AND prod_brand = '".$brand."'
 					AND UPPER(prod_name) like UPPER('%".$name."%') AND UPPER(ref_id) like UPPER('%".$ref_id."%')
 					ORDER BY created_date; ";
 									

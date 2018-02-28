@@ -12,7 +12,7 @@ class Brand extends DB_Manager{
 	}
 
 	function getBrandListByCategory($cat_id){
-		$query = " SELECT a.brand_id, a.brand_name, b.cat_name FROM tbl_brands a, tbl_categories b WHERE a.cat_id = b.cat_id AND a.cat_id = ".$cat_id." ORDER BY brand_id;  ";
+		$query = " SELECT a.brand_id, a.brand_name, b.cat_name FROM tbl_brands a, tbl_categories b WHERE a.cat_id = b.cat_id AND a.cat_id = '".$cat_id."' ORDER BY brand_id;  ";
 				 
 		$result = $this -> executeQuery($query);
 			 		
@@ -21,8 +21,8 @@ class Brand extends DB_Manager{
 			
 	function saveBrand($name, $cat_id){
 	
-		$query = " INSERT INTO tbl_brands (brand_name, cat_id)
-				   VALUES('".$name."', ".$cat_id.");  ";
+		$query = " INSERT INTO tbl_brands (brand_id, brand_name, cat_id)
+				   VALUES('".$this -> getUID('B')."','".$name."', '".$cat_id."');  ";
 			 
 		$result = "";
 		$result = $this -> executeInsertQuery($query);
@@ -39,9 +39,9 @@ class Brand extends DB_Manager{
 	
 		$query = "  UPDATE tbl_brands
 					SET brand_name = '".$name."',
-                        cat_id = ".$cat."
+                        cat_id = '".$cat."'
 					WHERE 
-						brand_id = ".$id.";  ";
+						brand_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeUpdateQuery($query);
@@ -59,7 +59,7 @@ class Brand extends DB_Manager{
 	function deleteBrand($id){
 	
 		$query = "  DELETE FROM tbl_brands
-					WHERE brand_id = ".$id.";  ";
+					WHERE brand_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -77,7 +77,7 @@ class Brand extends DB_Manager{
 	function getBrandDetailsById($id){
 	
 		$query = "  SELECT brand_name,cat_id FROM tbl_brands
-					WHERE brand_id = ".$id."; ";
+					WHERE brand_id = '".$id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	

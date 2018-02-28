@@ -18,8 +18,8 @@ class NewsLetter extends DB_Manager {
 	function saveContactUsInquiry($name,$company,$email,$subject,$message){
 		
 		$query = "  INSERT INTO tbl_web_inquiry 
-					(name, email, company, subject, message, inq_date)
-					VALUES('".$name."','".$email."','".$company."','".$subject."','".$message."',now());  ";
+					(inq_id, name, email, company, subject, message, inq_date)
+					VALUES('".$this -> getUID('Q')."','".$name."','".$email."','".$company."','".$subject."','".$message."',now());  ";
 									
 		$result = "";
 		$result = $this -> executeInsertQuery($query);	

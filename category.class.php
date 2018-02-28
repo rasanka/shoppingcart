@@ -6,7 +6,7 @@ class Category extends DB_Manager {
 	function loadCategoryByID($cat_id){
 	
 		$query = "  SELECT cat_name FROM tbl_categories
-					WHERE cat_id = ".$cat_id."; ";
+					WHERE cat_id = '".$cat_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -22,7 +22,7 @@ class Category extends DB_Manager {
 	function loadBrandByID($brand_id){
 	
 		$query = "  SELECT brand_name FROM tbl_brands
-					WHERE brand_id = ".$brand_id."; ";
+					WHERE brand_id = '".$brand_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -62,7 +62,7 @@ class Category extends DB_Manager {
 	
 		$query = "  SELECT brand_id, brand_name
 					FROM tbl_brands
-					WHERE cat_id = ".$cat_id."; ";
+					WHERE cat_id = '".$cat_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -86,7 +86,7 @@ class Category extends DB_Manager {
 	
 		$query = "  SELECT brand_name
 					FROM tbl_brands
-					WHERE cat_id = ".$cat_id." AND brand_id = ".$brand_id."; ";
+					WHERE cat_id = '".$cat_id."' AND brand_id = '".$brand_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	

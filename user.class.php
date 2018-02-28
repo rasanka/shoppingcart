@@ -21,8 +21,8 @@ class User extends DB_Manager {
 
 		if(!isset($houseNo) || empty($houseNo)) { $houseNo = 'null'; }
 	
-		$query = "INSERT INTO tbl_users (first_name,last_name,email,contact_no,password,billing_house_no,billing_street,billing_city,billing_region,billing_postal_code,billing_country,registered_date,user_status) 
-				  VALUES('".$fname."','".$lname."','".$email."','".$contact."','".$password."',".$houseNo.",NULLIF('".$street."',''),NULLIF('".$city."',''),NULLIF('".$region."',''),NULLIF('".$postal."',''),'".$country."',now(),'INACTIVE'); ";
+		$query = "INSERT INTO tbl_users (user_id,first_name,last_name,email,contact_no,password,billing_house_no,billing_street,billing_city,billing_region,billing_postal_code,billing_country,registered_date,user_status) 
+				  VALUES('".$this -> getUID('U')."','".$fname."','".$lname."','".$email."','".$contact."','".$password."',".$houseNo.",NULLIF('".$street."',''),NULLIF('".$city."',''),NULLIF('".$region."',''),NULLIF('".$postal."',''),'".$country."',now(),'INACTIVE'); ";
 
 		$userId = 0;
 		$userId = $this -> executeInsertQueryReturnID($query);
@@ -33,7 +33,7 @@ class User extends DB_Manager {
 	function updateUserPassword($user_id, $password) {
 		$query = "  UPDATE tbl_users 
                     SET password = '".$password."'
-                    WHERE user_id = ".$user_id."; ";
+                    WHERE user_id = '".$user_id."'; ";
 
         $result = $this -> executeUpdateQuery($query);  
         return $result;
@@ -43,7 +43,7 @@ class User extends DB_Manager {
 
         $query = "  UPDATE tbl_users 
                     SET user_status = 'ACTIVE'
-                    WHERE user_id = ".$user_id."; ";
+                    WHERE user_id = '".$user_id."'; ";
 
         $result = $this -> executeUpdateQuery($query);  
         return $result;
@@ -80,7 +80,7 @@ class User extends DB_Manager {
 		$query = "  SELECT first_name, last_name, email, contact_no, password, billing_house_no, billing_street, billing_city,
 					billing_region, billing_postal_code, billing_country, registered_date, user_status
 					FROM tbl_users
-					WHERE user_id = ".$id."; ";
+					WHERE user_id = '".$id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	

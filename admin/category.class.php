@@ -13,8 +13,8 @@ class Category extends DB_Manager{
 			
 	function saveCategory($name){
 	
-		$query = " INSERT INTO tbl_categories (cat_name)
-				   VALUES('".$name."');  ";
+		$query = " INSERT INTO tbl_categories (cat_id,cat_name)
+				   VALUES('".$this -> getUID('C')."','".$name."');  ";
 			 
 		$result = "";
 		$result = $this -> executeInsertQuery($query);
@@ -32,7 +32,7 @@ class Category extends DB_Manager{
 		$query = "  UPDATE tbl_categories
 					SET cat_name = '".$name."'
 					WHERE 
-						cat_id = ".$id.";  ";
+						cat_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeUpdateQuery($query);
@@ -50,7 +50,7 @@ class Category extends DB_Manager{
 	function deleteCategory($id){
 	
 		$query = "  DELETE FROM tbl_categories
-					WHERE cat_id = ".$id.";  ";
+					WHERE cat_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -68,7 +68,7 @@ class Category extends DB_Manager{
 	function getCategoryDetailsById($id){
 	
 		$query = "  SELECT cat_name FROM tbl_categories
-					WHERE cat_id = ".$id."; ";
+					WHERE cat_id = '".$id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	

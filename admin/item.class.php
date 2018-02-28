@@ -14,9 +14,9 @@ class Item extends DB_Manager{
 			
 	function saveItem($name,$prod_id,$short_desc,$desc,$price,$stock,$ref_id,$keywords,$status,$rating,$badge){
 	
-		$query = " INSERT INTO tbl_items (item_name,short_desc,item_desc,item_prod,item_price,
+		$query = " INSERT INTO tbl_items (item_id,item_name,short_desc,item_desc,item_prod,item_price,
 											 item_stock,ref_id,item_keywords,status,rating,badge)
-				   VALUES('".$name."','".$short_desc."','".$desc."', ".$prod_id.", ".$price.", ".$stock.", '".$ref_id."', '".$keywords."', '".$status."', ".$rating.", '".$badge."');  ";
+				   VALUES('".$this -> getUID('I')."','".$name."','".$short_desc."','".$desc."', '".$prod_id."', ".$price.", ".$stock.", '".$ref_id."', '".$keywords."', '".$status."', ".$rating.", '".$badge."');  ";
 			 
 		$this -> logData($query);
 
@@ -29,7 +29,7 @@ class Item extends DB_Manager{
 	function saveItemImage($item_id,$seq_id,$name){
 	
 		$query = " INSERT INTO tbl_item_images (item_id, seq_id, image_name)
-				   VALUES(".$item_id.", ".$seq_id.", '".$name."');  ";
+				   VALUES('".$item_id."', ".$seq_id.", '".$name."');  ";
 
 		$this -> logData($query);
 			 
@@ -51,8 +51,8 @@ class Item extends DB_Manager{
 					SET prod_name = '".$name."',
 						short_desc = '".$short_desc."',
 						product_desc = '".$desc."',
-						prod_cat = ".$cat_id.",
-						prod_brand = ".$brand_id.",
+						prod_cat = '".$cat_id."',
+						prod_brand = '".$brand_id."',
 						prod_price = ".$price.",
 						prod_stock = ".$stock.",
 						supplier_id = ".$supplier.",
@@ -61,7 +61,7 @@ class Item extends DB_Manager{
 						rating = ".$rating.",
 						badge = '".$badge."'
 					WHERE 
-						prod_id = ".$id.";  ";
+						prod_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeUpdateQuery($query);
@@ -79,7 +79,7 @@ class Item extends DB_Manager{
 	function deleteProduct($id){
 	
 		$query = "  DELETE FROM tbl_products
-					WHERE prod_id = ".$id.";  ";
+					WHERE prod_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -96,7 +96,7 @@ class Item extends DB_Manager{
 	function deleteProductImages($id){
 	
 		$query = "  DELETE FROM tbl_product_images
-					WHERE prod_id = ".$id.";  ";
+					WHERE prod_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -114,7 +114,7 @@ class Item extends DB_Manager{
 	
 		$query = "  SELECT prod_name,product_desc,prod_cat,prod_brand,prod_price,prod_stock,ref_id,supplier_id,prod_keywords,status,short_desc,rating,badge 
 					FROM tbl_products
-					WHERE prod_id = ".$id."; ";
+					WHERE prod_id = '".$id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -141,7 +141,7 @@ class Item extends DB_Manager{
 	}
 
 	function getProductImages($pid){
-		$query = " SELECT image_name FROM tbl_product_images WHERE prod_id = ".$pid." ORDER BY seq_id;  ";
+		$query = " SELECT image_name FROM tbl_product_images WHERE prod_id = '".$pid."' ORDER BY seq_id;  ";
 				 
 		$result = $this -> executeQuery($query);
 			 		
@@ -152,7 +152,7 @@ class Item extends DB_Manager{
 		
 		$query = "  SELECT prod_id, prod_name, ref_id, created_date
 					FROM tbl_products
-					WHERE prod_cat = ".$cat_id." AND prod_brand = ".$brand."
+					WHERE prod_cat = '".$cat_id."' AND prod_brand = '".$brand."'
 					AND UPPER(prod_name) like UPPER('%".$name."%') AND UPPER(ref_id) like UPPER('%".$ref_id."%')
 					ORDER BY created_date; ";
 									

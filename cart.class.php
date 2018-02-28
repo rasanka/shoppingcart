@@ -7,7 +7,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT cart_id, total_price, created_datetime
 					FROM tbl_cart
-					WHERE user_id = ".$user_id." and cart_status = 'INCOMPLETE'; ";
+					WHERE user_id = '".$user_id."' and cart_status = 'INCOMPLETE'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -24,7 +24,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT user_id, total_price, created_datetime, cart_status
 					FROM tbl_cart
-					WHERE cart_id = ".$cart_id."; ";
+					WHERE cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -42,7 +42,7 @@ class Cart extends DB_Manager {
 		$query = "  SELECT IFNULL(SUM(qty), 0) 
 					FROM tbl_cart a, tbl_cart_items b 
 					WHERE a.cart_id = b.cart_id 
-					AND  b.cart_id = ".$cart_id."; ";
+					AND  b.cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -59,7 +59,7 @@ class Cart extends DB_Manager {
 		$query = "  SELECT IFNULL(SUM(qty), 0) 
 					FROM tbl_cart a, tbl_cart_items b 
 					WHERE a.cart_id = b.cart_id 
-					AND  b.cart_id = ".$cart_id." AND cart_status = 'INCOMPLETE'; ";
+					AND  b.cart_id = '".$cart_id."' AND cart_status = 'INCOMPLETE'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -75,7 +75,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT total_price
 					FROM tbl_cart
-					WHERE cart_id = ".$cart_id."; ";
+					WHERE cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -91,7 +91,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT prod_id, qty, unit_price
 					FROM tbl_cart_items
-					WHERE cart_id = ".$cart_id."; ";
+					WHERE cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -116,7 +116,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT count(*)
 					FROM tbl_cart
-					WHERE cart_id = ".$cart_id." AND cart_status = 'INCOMPLETE'; ";
+					WHERE cart_id = '".$cart_id."' AND cart_status = 'INCOMPLETE'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);
@@ -134,7 +134,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT count(*)
 					FROM tbl_cart
-					WHERE user_id = ".$user_id." AND cart_status = '".$status."'; ";
+					WHERE user_id = '".$user_id."' AND cart_status = '".$status."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);
@@ -151,7 +151,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT count(*)
 					FROM tbl_cart_items
-					WHERE cart_id = ".$cart_id."; ";
+					WHERE cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);
@@ -168,7 +168,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT count(*)
 					FROM tbl_cart_items
-					WHERE cart_id = ".$cart_id." AND prod_id = ".$prod_id."; ";
+					WHERE cart_id = '".$cart_id."' AND prod_id = ".$prod_id."; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);
@@ -187,13 +187,13 @@ class Cart extends DB_Manager {
 		if($details['item_count'] == 0) {
 
             $query = "  INSERT INTO tbl_cart (user_id, total_price, ip_addr, cart_status, created_datetime) 
-                        VALUES(".$user_id.",".floatval(intval($qty)*floatval($unit_price)).",'".$this -> getClientIP()."', 'INCOMPLETE', now()); ";
+                        VALUES('".$user_id."',".floatval(intval($qty)*floatval($unit_price)).",'".$this -> getClientIP()."', 'INCOMPLETE', now()); ";
 
             $result = "";
             $inserted_cart_id = $this -> executeInsertQueryReturnID($query);
 
             $query = "  INSERT INTO tbl_cart_items (cart_id, prod_id, qty, unit_price) 
-                        VALUES(".$inserted_cart_id.",".$prod_id.",".intval($qty).",".floatval($unit_price)."); ";
+                        VALUES('".$inserted_cart_id."','".$prod_id."',".intval($qty).",".floatval($unit_price)."); ";
                 
             $result = $this -> executeInsertQuery($query);
             return $inserted_cart_id;
@@ -206,7 +206,7 @@ class Cart extends DB_Manager {
 
         $query = "  UPDATE tbl_cart 
                     SET total_price = total_price + ".floatval(intval($qty)*floatval($unit_price))." 
-                    WHERE cart_id = ".$cart_id."; ";
+                    WHERE cart_id = '".$cart_id."'; ";
 
         $result = "";
 		$result = $this -> executeUpdateQuery($query);
@@ -216,14 +216,14 @@ class Cart extends DB_Manager {
 
             $query = "  UPDATE tbl_cart_items 
                         SET qty = qty + ".$qty."
-                        WHERE cart_id = ".$cart_id." AND prod_id = ".$prod_id."; ";
+                        WHERE cart_id = '".$cart_id."' AND prod_id = '".$prod_id."'; ";
 
             $result = $this -> executeUpdateQuery($query);                        
 
         } else { // Adding the new item to the cart
 
             $query = "  INSERT INTO tbl_cart_items (cart_id, prod_id, qty, unit_price) 
-                        VALUES(".$cart_id.",".$prod_id.",".intval($qty).",".floatval($unit_price)."); ";
+                        VALUES('".$cart_id."','".$prod_id."',".intval($qty).",".floatval($unit_price)."); ";
             
             $result = $this -> executeInsertQuery($query);
         }
@@ -235,7 +235,7 @@ class Cart extends DB_Manager {
 
         $query = "  UPDATE tbl_cart 
                     SET cart_status = '".$status."' 
-                    WHERE cart_id = ".$cart_id."; ";
+                    WHERE cart_id = '".$cart_id."'; ";
 
         $result = "";
 		$result = $this -> executeUpdateQuery($query);
@@ -247,13 +247,13 @@ class Cart extends DB_Manager {
 
         $query = "  UPDATE tbl_cart_items 
                     SET qty = ".$qty."
-                    WHERE cart_id = ".$cart_id." AND prod_id = ".$prod_id."; ";
+                    WHERE cart_id = '".$cart_id."' AND prod_id = '".$prod_id."'; ";
 
         $result = $this -> executeUpdateQuery($query);  
 
         $query = "  UPDATE tbl_cart 
-                    SET total_price = (SELECT SUM(qty*unit_price) FROM tbl_cart_items WHERE cart_id = ".$cart_id.") 
-                    WHERE cart_id = ".$cart_id."; ";
+                    SET total_price = (SELECT SUM(qty*unit_price) FROM tbl_cart_items WHERE cart_id = '".$cart_id."') 
+                    WHERE cart_id = '".$cart_id."'; ";
 
         $result = "";
 		$result = $this -> executeUpdateQuery($query);        
@@ -264,7 +264,7 @@ class Cart extends DB_Manager {
     function removeItemFromCart($cart_id, $prod_id) {
 
         $query = "  DELETE FROM tbl_cart_items 
-                    WHERE cart_id = ".$cart_id." AND prod_id = ".$prod_id."; ";
+                    WHERE cart_id = '".$cart_id."' AND prod_id = '".$prod_id."'; ";
 
         $result = $this -> executeDeleteQuery($query); 
 
@@ -272,14 +272,14 @@ class Cart extends DB_Manager {
 
         if($details['cart_empty'] == 0) { 
             $query = "  DELETE FROM tbl_cart 
-                        WHERE cart_id = ".$cart_id."; ";
+                        WHERE cart_id = '".$cart_id."'; ";
 
             $result = "";
             $result = $this -> executeDeleteQuery($query);  
         } else {
             $query = "  UPDATE tbl_cart 
-                        SET total_price = (SELECT SUM(qty*unit_price) FROM tbl_cart_items WHERE cart_id = ".$cart_id.") 
-                        WHERE cart_id = ".$cart_id."; ";
+                        SET total_price = (SELECT SUM(qty*unit_price) FROM tbl_cart_items WHERE cart_id = '".$cart_id."') 
+                        WHERE cart_id = '".$cart_id."'; ";
 
             $result = "";
             $result = $this -> executeUpdateQuery($query);  

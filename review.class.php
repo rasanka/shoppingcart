@@ -5,8 +5,8 @@ class Review extends DB_Manager {
 	
 	function saveReview($prod_id,$rating,$msg,$name,$email){
 
-		$query = "INSERT INTO tbl_product_reviews (prod_id, rating, review, name, email, review_date) 
-				  VALUES(".$prod_id.",".$rating.",'".$msg."','".$name."','".$email."',now()); ";
+		$query = "INSERT INTO tbl_product_reviews (review_id,prod_id, rating, review, name, email, review_date) 
+				  VALUES('".$this -> getUID('PR')."','".$prod_id."',".$rating.",'".$msg."','".$name."','".$email."',now()); ";
 
 		$revId = 0;
 		$revId = $this -> executeInsertQueryReturnID($query);
@@ -18,7 +18,7 @@ class Review extends DB_Manager {
 	
 		$query = "  SELECT prod_id, rating, review, name, email, review_date
 					FROM tbl_product_reviews
-					WHERE review_id = ".$id."; ";
+					WHERE review_id = '".$id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -36,7 +36,7 @@ class Review extends DB_Manager {
 	
       	$query = "  SELECT review_id, rating, review, name, email, DATE_FORMAT(review_date,'%d %b %Y')
 					FROM tbl_product_reviews
-					WHERE prod_id = ".$prod_id."
+					WHERE prod_id = '".$prod_id."'
                     ORDER BY review_date DESC; ";
       			 
 		$result = "";

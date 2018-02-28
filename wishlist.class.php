@@ -8,7 +8,7 @@ class Wishlist extends DB_Manager {
 	
 		$query = "  SELECT prod_id
 					FROM tbl_wishlist
-					WHERE user_id = ".$user_id."; ";
+					WHERE user_id = '".$user_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -30,7 +30,7 @@ class Wishlist extends DB_Manager {
 	
 		$query = "  SELECT count(*)
 					FROM tbl_wishlist
-					WHERE user_id = ".$user_id." AND prod_id = ".$prod_id."; ";
+					WHERE user_id = '".$user_id."' AND prod_id = '".$prod_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);
@@ -52,7 +52,7 @@ class Wishlist extends DB_Manager {
 			$msg = "DUPLICATE";
 		} else {
 
-			$query = "INSERT INTO tbl_wishlist (user_id, prod_id) VALUES(".$user_id.",".$prod_id."); ";
+			$query = "INSERT INTO tbl_wishlist (user_id, prod_id) VALUES('".$user_id."','".$prod_id."'); ";
 
 			$result = "";
 			$result = $this -> executeInsertQuery($query);
@@ -68,7 +68,7 @@ class Wishlist extends DB_Manager {
 
 	function removeFromWishList($user_id, $prod_id) {
 
-		$query = "DELETE FROM tbl_wishlist WHERE user_id = ".$user_id." AND prod_id = ".$prod_id."; ";
+		$query = "DELETE FROM tbl_wishlist WHERE user_id = '".$user_id."' AND prod_id = '".$prod_id."'; ";
 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
