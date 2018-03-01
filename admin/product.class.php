@@ -2,6 +2,10 @@
 require_once("db_manager.class.php");
 
 class Product extends DB_Manager{
+
+	function getProductId() {
+		return $this -> getUID('P');
+	}
 	
 	function getProductList(){
 		$query = " SELECT prod_id, prod_name FROM tbl_products;  ";
@@ -12,17 +16,19 @@ class Product extends DB_Manager{
 		return $result;
 	}	
 			
-	function saveProduct($name,$cat_id,$brand_id,$ref_id,$status){
-	
+	function saveProduct($prod_id,$name,$cat_id,$brand_id,$ref_id,$status){
+			
 		$query = " INSERT INTO tbl_products (prod_id,prod_name,prod_cat,prod_brand,ref_id,status)
-				   VALUES('".$this -> getUID('P')."','".$name."','".$cat_id."', '".$brand_id."', '".$ref_id."','".$status."');  ";
+				   VALUES('".$prod_id."','".$name."','".$cat_id."', '".$brand_id."', '".$ref_id."','".$status."');  ";
 			 
-		//$this -> logData($query);
+		$this -> logData($query);
 
-		$id = 0;
-		$id = $this -> executeInsertQueryReturnID($query);
-					
-		return $id;
+		$result = $this -> executeInsertQuery($query);
+		if($result) {
+			return 'SUCCESS';
+		} else {
+			return 'ERROR';			
+		}
 	}	
 
 	function saveProductImage($prod_id,$seq_id,$name){

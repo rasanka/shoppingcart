@@ -10,6 +10,7 @@ $logObj   = new Logger();
 
 if($m_chksql == "saveProduct"){	
 
+	$prod_id= $_POST['id'];
 	$name= $_POST['name'];
     $cat_id= $_POST['cat_id'];
 	$brand_id= $_POST['brand_id'];
@@ -18,15 +19,14 @@ if($m_chksql == "saveProduct"){
 
 	//$logObj -> logData($name."-".$cat_id."-".$brand_id."-".$desc."-".$price."-".$stock."-".$ref_id."-".$supplier."-".$status);
 
-	$prod_id = 0;
-	$prod_id = $prodObj -> saveProduct($name,$cat_id,$brand_id,$ref_id,$status); 
+	$result = $prodObj -> saveProduct($prod_id,$name,$cat_id,$brand_id,$ref_id,$status); 
 
 	$msg = 'ERROR';
-	if($prod_id > 0) {
+	if($result == 'SUCCESS') {
 
 		//$logObj -> logData('PROD ID -'.$prod_id);
 
-		$directory = "../product_images/".$ref_id."/";
+		$directory = "../product_images/".$prod_id."/";
 		$filecount = 0;
 		if (glob($directory . "*.*") != false){
 			$filecount = count(glob($directory . "th_*.*"));

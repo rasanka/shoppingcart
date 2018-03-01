@@ -7,6 +7,11 @@
 		die();
 	}
 	ob_end_flush();
+
+	require_once("product.class.php");
+  
+  $prodObj = new Product();
+	$prod_id = $prodObj -> getProductId();
 ?>
 <html>
 <head>
@@ -130,14 +135,15 @@ function validateEntry(){
 	
 function save(){
 	document.getElementById("save_result").innerHTML = "<img src='images/loading.gif'>";
+	var prod_id = '<?php echo $prod_id; ?>';
 	var name = document.getElementById("name").value;
-  	var category = document.getElementById("categories").value;
+  var category = document.getElementById("categories").value;
 	var brand = document.getElementById("brands").value;
-  	var ref_id = document.getElementById("ref_id").value;
+  var ref_id = document.getElementById("ref_id").value;
 	var status = document.getElementById("status_select").value;
 
 	var urlString = "product.logic.php";
-	var parameters = "chksql=saveProduct&name="+escape(name)+"&cat_id="+category+"&brand_id="+brand+"&ref_id="+ref_id+"&status="+status;	
+	var parameters = "chksql=saveProduct&id="+prod_id+"&name="+escape(name)+"&cat_id="+category+"&brand_id="+brand+"&ref_id="+ref_id+"&status="+status;	
 
   //alert(parameters);	
 	var http = getHTTPObject();
@@ -148,6 +154,7 @@ function save(){
 		if (http.readyState == 4){
 			if (http.status == 200) {
 				var result = http.responseText;
+				//alert(result);
 				document.getElementById("save_result").innerHTML = "";
 				if(result.indexOf("SUCCESS") > -1){
 					document.getElementById("save_result").style.color = "blue";
@@ -218,13 +225,8 @@ function resetPage(){
 }	
 
 function startUpload(){
-	var ref_id =  document.getElementById("ref_id").value;	
+	var ref_id =  '<?php echo $prod_id; ?>';	
 	var valid = true;
-	
-	if(ref_id == ""){
-		inlineMsg('ref_id','<strong>Error</strong><br />Please enter the Reference ID!',2);
-		valid = false;
-	}
 	
 	if(valid) {		
 		//alert('test');
@@ -247,7 +249,7 @@ function startUpload(){
 				document.getElementById("loading_div").innerHTML = "";
 				//Add uploaded file to list
 				var folderName = '';
-				folderName = document.getElementById("ref_id").value;
+				folderName = '<?php echo $prod_id; ?>';
 	
 				var extension = '';
 				extension = file.substring(file.indexOf("."),file.length);
@@ -275,7 +277,7 @@ function startUpload(){
 function deleteImage(url){
 	var result = confirm("Are you sure! You want to Delete this image?");
 	if(result){
-		var ref_id = trim(document.getElementById("ref_id").value);
+		var ref_id = '<?php echo $prod_id; ?>';
 		var urlString = "product.logic.php";
     var parameters = "chksql=deleteProductImage&ref_id="+trim(ref_id)+"&url="+url;
 		var http = getHTTPObject();
