@@ -10,6 +10,7 @@ $logObj   = new Logger();
 
 if($m_chksql == "saveItem"){	
 
+	$item_id= $_POST['item_id'];	
 	$name= $_POST['name'];
     $prod_id= $_POST['prod_id'];
 	$short_desc= $_POST['short_desc'];
@@ -22,17 +23,16 @@ if($m_chksql == "saveItem"){
 	$badge= $_POST['badge'];
 	$status= $_POST['status'];
 
-	$logObj -> logData($name."-".$prod_id."-".$desc."-".$price."-".$stock."-".$ref_id."-".$status);
+	//$logObj -> logData($item_id."-".$prod_id."-".$desc."-".$price."-".$stock."-".$ref_id."-".$status);
 
-	$item_id = 0;
-	$item_id = $itemObj -> saveItem($name,$prod_id,$short_desc,$desc,$price,$stock,$ref_id,$keywords,$status,$rating,$badge); 
+	$result = $itemObj -> saveItem($item_id, $name,$prod_id,$short_desc,$desc,$price,$stock,$ref_id,$keywords,$status,$rating,$badge); 
 
 	$msg = 'ERROR';
-	if($item_id > 0) {
+	if($result == 'SUCCESS') {
 
-		$logObj -> logData('ITEM ID -'.$item_id);
+		// $logObj -> logData('------------------ITEM ID -'.$item_id);
 
-		$directory = "../item_images/".$ref_id."/";
+		$directory = "../item_images/".$item_id."/";
 		$filecount = 0;
 		if (glob($directory . "*.*") != false){
 			$filecount = count(glob($directory . "th_*.*"));
@@ -40,7 +40,7 @@ if($m_chksql == "saveItem"){
 			$filecount = 0;
 		}
 
-		$logObj -> logData('File Count -'.$filecount);
+		//$logObj -> logData('File Count -'.$filecount);
 				
 		if($filecount > 0){
 			$images = glob($directory . "th_*.*");
@@ -50,12 +50,12 @@ if($m_chksql == "saveItem"){
 				$imageurl = '';
 				$imageurl = str_replace("th_","",$thumburl);
 
-				//$logObj -> logData('IMG URL '.$i.' - '.$imageurl);
+				//$logObj -> logData('IMG URL ============'.$i.' - '.$imageurl);
 				//$logObj -> logData('THMB URL -'.$thumburl);
 
 				$image_name = substr($imageurl,strripos($imageurl, '/')+1,strlen($imageurl));
 
-				//$logObj -> logData('IMG -'.$image_name);	
+				//$logObj -> logData('IMG------------------- -'.$image_name);	
 
 				$msg = $itemObj -> saveItemImage($item_id, $i, $image_name);
 				$i++;
@@ -66,32 +66,30 @@ if($m_chksql == "saveItem"){
 	echo $msg;	
 }
 
-if($m_chksql == "updateProduct"){	
+if($m_chksql == "updateItem"){	
 
 	$id = $_POST['id'];
 	$name= $_POST['name'];
-    $cat_id= $_POST['cat_id'];
-	$brand_id= $_POST['brand_id'];
+    $prod_id= $_POST['prod_id'];
 	$short_desc= $_POST['short_desc'];
 	$desc= $_POST['desc'];
 	$price= $_POST['price'];
 	$stock= $_POST['stock'];
 	$ref_id= $_POST['ref_id'];
-	$supplier= $_POST['supplier'];
 	$keywords= $_POST['keywords'];
 	$status= $_POST['status'];
 	$rating= $_POST['rating'];
 	$badge= $_POST['badge'];
 
 	$msg = '';
-	$msg = $itemObj -> updateProduct($id,$name,$cat_id,$brand_id,$short_desc,$desc,$price,$stock,$supplier,$keywords,$status,$rating,$badge); 
+	$msg = $itemObj -> updateItem($id,$name,$prod_id,$ref_id,$short_desc,$desc,$price,$stock,$keywords,$status,$rating,$badge); 
 
 	if($msg == 'SUCCESS') {
 		// Deleting the product images and re-inserting during the update to get the latest
-		$msg = $itemObj -> deleteProductImages($id);
+		$msg = $itemObj -> deleteItemImages($id);
 
 		// Re-inserting the images
-		$directory = "../product_images/".$ref_id."/";
+		$directory = "../item_images/".$id."/";
 		$filecount = 0;
 		if (glob($directory . "*.*") != false){
 			$filecount = count(glob($directory . "th_*.*"));
@@ -117,7 +115,7 @@ if($m_chksql == "updateProduct"){
 
 				//$logObj -> logData('IMG -'.$image_name);	
 
-				$msg = $itemObj -> saveProductImage($id, $i, $image_name);
+				$msg = $itemObj -> saveItemImage($id, $i, $image_name);
 				$i++;
 			}
 		}
@@ -125,18 +123,18 @@ if($m_chksql == "updateProduct"){
 	echo $msg;	
 }
 
-if($m_chksql == "deleteProduct"){	
+if($m_chksql == "deleteItem"){	
 
 	$id = $_POST['id'];
 	$level = $_SESSION["ses_user_level"];
 
-	$details = $itemObj -> getProductDetailsById($id);
+	//$details = $itemObj -> getItemDetailsById($id);
 	
 	$msg = '';
 	if($level == "ADMIN"){
-		$msg = $itemObj -> deleteProduct($id); 
+		$msg = $itemObj -> deleteItem($id); 
 
-		$dirPath = "../product_images/".$details['ref_id']."/";	
+		$dirPath = "../item_images/".$id."/";	
 
 		$files = glob($dirPath . '*', GLOB_MARK);
     	foreach ($files as $file) {
@@ -144,7 +142,7 @@ if($m_chksql == "deleteProduct"){
     	}
     	rmdir($dirPath);		
 
-		$msg = $itemObj -> deleteProductImages($id); 
+		$msg = $itemObj -> deleteItemImages($id); 
 	}
 	echo $msg;	
 }
@@ -203,12 +201,12 @@ if($m_chksql == "loadStatusList"){
 	echo $status;			
 }
 
-if($m_chksql == "deleteProductImage")
+if($m_chksql == "deleteItemImage")
 {	
 	$ref_id   = $_POST['ref_id'];
 	$thumbnail    = $_POST['url'];
 	
-	$directory = "../product_images/".$ref_id."/";	
+	$directory = "../item_images/".$ref_id."/";	
 	
 	$filename = str_replace("th_","",$thumbnail);
 	
@@ -226,21 +224,20 @@ if($m_chksql == "deleteProductImage")
 	echo $files;	
 }
 
-if($m_chksql == "searchProducts"){	
+if($m_chksql == "searchItems"){	
 
 	$name = $_POST['name'];
-	$cat_id = $_POST['cat_id'];
-	$brand = $_POST['brand'];
+	$prod_id = $_POST['prod_id'];
 	$ref_id = $_POST['ref_id'];
 
 	$item_details = array();	
-	$item_details = $itemObj -> searchProducts($name,$cat_id,$brand,$ref_id);  
+	$item_details = $itemObj -> searchItems($name,$prod_id,$ref_id);  
 	
 	if(count($item_details) > 1){
 	
 		$m_out = $m_out."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='body'>
 						  <tr class='heading' height='20'>
-							<th width='10%' align='left'>Product ID</td>
+							<th width='10%' align='left'>Item ID</td>
 							<th width='30%' align='left'>Title</td>
 							<th width='20%' align='left'>Ref ID (SKU)</td>
 							<th width='20%' align='left'>Create Date</td>
@@ -256,12 +253,12 @@ if($m_chksql == "searchProducts"){
 		while($i < (count($item_details)/4)){
 
 			$m_out = $m_out."<tr height='20' style='color:#009900' onMouseOver=this.className='reorderhighlight' onMouseOut=this.className='reordernormal'>   
-								<td>".$item_details['prod_id'.$rowCount]."</td> 
-								<td>".$item_details['prod_name'.$rowCount]."</td> 
+								<td>".$item_details['item_id'.$rowCount]."</td> 
+								<td>".$item_details['item_name'.$rowCount]."</td> 
 								<td>".$item_details['ref_id'.$rowCount]."</td> 
 								<td>".$item_details['created_date'.$rowCount]."</td> 
-								<td align='center'><a href='edit_product.php?id=".$item_details['prod_id'.$rowCount]."'>Edit</a></td>
-								<td align='center'><a onClick='deleteProduct(".$item_details['prod_id'.$rowCount].");'>Delete</a></td>
+								<td align='center'><a href='edit_item.php?id=".$item_details['item_id'.$rowCount]."'>Edit</a></td>
+								<td align='center'><a onClick='deleteItem(".$item_details['item_id'.$rowCount].");'>Delete</a></td>
 							</tr>  ";	
 				
 			$rowCount += 1;		

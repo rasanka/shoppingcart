@@ -143,7 +143,7 @@
 						  $products_html = $products_html." 
 							<li>
 							  <figure>
-								<a class='aa-product-img' href='index.php?page=category&cat_id=".$cat_id."&brand_id=".$brand_id."&prod_id=".$prod_array['prod_id'.$itemCount]."'><img width='250' height='300' src='product_images/".$prod_array['ref_id'.$itemCount]."/".$prod_image['image_name']."' alt='".$prod_array['prod_name'.$itemCount]."'></a>
+								<a class='aa-product-img' href='index.php?page=category&cat_id=".$cat_id."&brand_id=".$brand_id."&prod_id=".$prod_array['prod_id'.$itemCount]."'><img width='250' height='300' src='product_images/".$prod_array['prod_id'.$itemCount]."/".$prod_image['image_name']."' alt='".$prod_array['prod_name'.$itemCount]."'></a>
 								
 								<figcaption>
 								  <h4 class='aa-product-title'><a href='index.php?page=category&cat_id=".$cat_id."&brand_id=".$brand_id."&prod_id=".$prod_array['prod_id'.$itemCount]."'>".$prod_array['prod_name'.$itemCount]."</a></h4>

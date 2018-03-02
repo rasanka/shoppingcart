@@ -1,17 +1,48 @@
 <?php
 	ob_start();
 	include_once ("config/config.php");
+	require_once ("item.class.php");
+	
 	if($_SESSION["ses_user_name"] == null || $_SESSION["ses_user_name"] == "" || !isset($_SESSION["ses_user_name"])){
 		session_destroy();
-		header("Location:".$SERVER_URL."index.php");
+		header("Location:index.php");
+		die();
+	}
+	
+	if($_SESSION["ses_user_level"] == "ADMIN"){ 	
+		$id = $_GET['id'];
+	}
+	if($id == ""){
+		header("Location:item.php");
+		die();
+	}
+		
+	$obj   = new Item();
+		
+	$details = array();
+	$details = $obj -> getItemDetailsById($id);
+
+  $imageNames = array();
+  $imageNames = $obj -> getItemImages($id);
+
+  $imagePaths = "";
+  $i = 0;
+	while ($i < count($imageNames)) {
+    // $directory = "../product_images/".$ref_id."/";	
+		$imagePaths = $imagePaths."../item_images/".$id."/".$imageNames[$i][0].'@';			
+		$i +=1;
+	} 
+
+  // $short_desc = addslashes($details['short_desc']);
+  // $product_desc = addslashes($details['desc']);
+
+  // echo $details['rating'].'-'.$details['badge'];
+		
+	if(count($details) == 0){
+		header("Location:item.php");
 		die();
 	}
 	ob_end_flush();
-
-	require_once("product.class.php");
-  
-  $prodObj = new Product();
-	$prod_id = $prodObj -> getProductId();
 ?>
 <html>
 <head>
@@ -41,55 +72,40 @@ function MM_reloadPage(init) {  //reloads the window if Nav4 resized
 }
 MM_reloadPage(true);
 
-function init(){
-	var level = "<?php echo $_SESSION["ses_user_level"]; ?>";
-	if(level == "ADMIN"){
-		document.getElementById("name").value = "";
-		loadCategoryList();    
-		loadStatusList();
-		document.getElementById("ref_id").value = ""; 	
-		document.getElementById("files").innerHTML ="";
-	}
+function loadDashBoard(){
+	//loadCategoryList();
+  	loadProductList();
+  	loadStatusList();
+    loadRatingList();
+    loadBadgeList();
+  	loadImages("<?php echo $imagePaths; ?>");
 }
 
-function loadCategoryList(){
-	var urlString = "category.logic.php?chksql=loadCategoryListForProduct";
-	var http = getHTTPObject();
-	http.open("GET", urlString , true);
-	http.onreadystatechange = function() {
-		if (http.readyState == 4){
-			if (http.status == 200) {
-				document.getElementById("categories_div").innerHTML = http.responseText;
-        		loadBrandListByCategory();
-			}else{
-				alert("Error Occured : " + http.statusText);
-			}
-		}
-	}
-	http.send(null); 		
-}
-
-function loadBrandListByCategory(){
-  var category = document.getElementById("categories").value;
-	var urlString = "brand.logic.php?chksql=loadBrandListByCategory&cat_id="+category;
-	var http = getHTTPObject();
-	http.open("GET", urlString , true);
-	http.onreadystatechange = function() {
-		if (http.readyState == 4){
-			if (http.status == 200) {
-				document.getElementById("brands_div").innerHTML = http.responseText;
-			}else{
-				alert("Error Occured : " + http.statusText);
-			}
-		}
-	}
-	http.send(null); 		
-}
-
-function loadStatusList(){
-	document.getElementById("status_select_div").innerHTML = "<img src='images/loading.gif'>";
+function loadProductList(){
 	var urlString = "product.logic.php";
-  	var parameters = "chksql=loadStatusList";
+	var parameters = "chksql=loadProductList";
+	
+	var http = getHTTPObject();
+	http.open("POST", urlString , true);
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	
+	http.onreadystatechange = function() {
+		if (http.readyState == 4){
+			if (http.status == 200) {
+				document.getElementById("products_div").innerHTML = http.responseText;
+        document.getElementById("products").value = "<?php echo $details['item_prod']; ?>";
+			}else{
+				alert("Error Occured : " + http.statusText);
+			}
+		}
+	}
+	http.send(parameters); 		
+}
+
+function loadRatingList(){
+	document.getElementById("rating_select_div").innerHTML = "<img src='images/loading.gif'>";
+	var urlString = "item.logic.php";
+  var parameters = "chksql=loadRatingList";
 
 	var http = getHTTPObject();
 	http.open("POST", urlString , true);
@@ -98,8 +114,55 @@ function loadStatusList(){
 	http.onreadystatechange = function() {
 		if (http.readyState == 4){
 			if (http.status == 200) {
+				document.getElementById("rating_select_div").innerHTML = "";
+				document.getElementById("rating_select_div").innerHTML = http.responseText;
+        document.getElementById("rating_select").value = "<?php echo $details['rating']; ?>";
+			} else{
+				alert("Error Occured : " + http.statusText);
+			}
+		}
+	}
+	http.send(parameters); 	
+}
+
+function loadBadgeList(){
+	document.getElementById("badge_select_div").innerHTML = "<img src='images/loading.gif'>";
+	var urlString = "item.logic.php";
+  var parameters = "chksql=loadBadgeList";
+
+	var http = getHTTPObject();
+	http.open("POST", urlString , true);
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+	http.onreadystatechange = function() {
+		if (http.readyState == 4){
+			if (http.status == 200) {
+				document.getElementById("badge_select_div").innerHTML = "";
+				document.getElementById("badge_select_div").innerHTML = http.responseText;
+        document.getElementById("badge_select").value = "<?php echo $details['badge']; ?>";
+			} else{
+				alert("Error Occured : " + http.statusText);
+			}
+		}
+	}
+	http.send(parameters); 	
+}
+
+function loadStatusList(){
+	document.getElementById("status_select_div").innerHTML = "<img src='images/loading.gif'>";
+	var urlString = "product.logic.php";
+    var parameters = "chksql=loadStatusList";
+	var http = getHTTPObject();
+	http.open("POST", urlString , true);
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+	http.onreadystatechange = function() {
+		if (http.readyState == 4){
+			if (http.status == 200) {
 				document.getElementById("status_select_div").innerHTML = "";
 				document.getElementById("status_select_div").innerHTML = http.responseText;
+        document.getElementById("status_select").value = "<?php echo $details['status']; ?>";
 			} else{
 				alert("Error Occured : " + http.statusText);
 			}
@@ -110,58 +173,76 @@ function loadStatusList(){
 
 function validateEntry(){
 	var name = document.getElementById("name").value;
-	var category = document.getElementById("categories").value;
-	var brand = document.getElementById("brands").value;
-  	var ref_id = document.getElementById("ref_id").value;
+    var product = document.getElementById("products").value;
+	//var brand = document.getElementById("brands").value;
+    var short_desc = document.getElementById("short_desc").value;
+	var description = CKEDITOR.instances.description.getData();
+	var price = document.getElementById("price").value;
+	var stock = document.getElementById("stock").value;
+	var ref_id = document.getElementById("ref_id").value;
+	//var supplier = document.getElementById("suppliers").value;
 	
 	var status = true;
 	
 	if(name == ""){
 		inlineMsg('name','<strong>Error</strong><br />Please enter the Name!',2);
 		status = false;
-	} else if(category == "-"){
-		inlineMsg('categories','<strong>Error</strong><br />Please select the Category!',2);
+	} else if(product == "-"){
+		inlineMsg('products','<strong>Error</strong><br />Please select the product!',2);
     	status = false;
-	} else if(brand == "-"){
-		inlineMsg('brands','<strong>Error</strong><br />Please select the Brand!',2);
-    	status = false;
+	} else if(short_desc == ""){
+		inlineMsg('short_desc','<strong>Error</strong><br />Please enter the Short Desc!',2);
+		status = false;
+	} else if(description == ""){
+		inlineMsg('specification_label','<strong>Error</strong><br />Please enter the Specification!',2);
+		status = false;
+	} else if(price == ""){
+		inlineMsg('price','<strong>Error</strong><br />Please enter the Price!',2);
+		status = false;
+	} else if(stock == ""){
+		inlineMsg('stock','<strong>Error</strong><br />Please enter the Stock!',2);
+		status = false;
 	} else if(ref_id == ""){
 		inlineMsg('ref_id','<strong>Error</strong><br />Please enter the Reference ID!',2);
 		status = false;
 	} 
 	  
 	if(status){
-		save();
+		update();
 	}	
 }
 	
-function save(){
-	document.getElementById("save_result").innerHTML = "<img src='images/loading.gif'>";
-	var prod_id = '<?php echo $prod_id; ?>';
+function update(){
+	var id = "<?php echo $id; ?>";
 	var name = document.getElementById("name").value;
-  var category = document.getElementById("categories").value;
-	var brand = document.getElementById("brands").value;
-  var ref_id = document.getElementById("ref_id").value;
+  var product = document.getElementById("products").value;
+	var short_desc = document.getElementById("short_desc").value;
+	var desc = CKEDITOR.instances.description.getData();
+	var price = document.getElementById("price").value;
+	var stock = document.getElementById("stock").value;
+	var ref_id = document.getElementById("ref_id").value;
+	var keywords = document.getElementById("keywords").value;
 	var status = document.getElementById("status_select").value;
+	var rating = document.getElementById("rating_select").value;
+  var badge = document.getElementById("badge_select").value;  
 
-	var urlString = "product.logic.php";
-	var parameters = "chksql=saveProduct&id="+prod_id+"&name="+escape(name)+"&cat_id="+category+"&brand_id="+brand+"&ref_id="+ref_id+"&status="+status;	
+	var urlString = "item.logic.php";
+	var parameters = "chksql=updateItem&id="+id+"&name="+escape(name)+"&prod_id="+product+"&short_desc="+escape(short_desc)+
+  "&desc="+escape(desc)+"&price="+price+"&stock="+stock+"&ref_id="+ref_id+"&keywords="+keywords+"&status="+status+"&rating="+rating+"&badge="+badge; 
 
-  //alert(parameters);	
+  //alert(parameters);
 	var http = getHTTPObject();
 	http.open("POST", urlString , true);
-	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 	http.onreadystatechange = function() {
 		if (http.readyState == 4){
 			if (http.status == 200) {
 				var result = http.responseText;
 				//alert(result);
-				document.getElementById("save_result").innerHTML = "";
 				if(result.indexOf("SUCCESS") > -1){
 					document.getElementById("save_result").style.color = "blue";
-					document.getElementById("save_result").innerHTML = "Product Created Successfully!";		
-					init();					
+					document.getElementById("save_result").innerHTML = "Product Updated Successfully!";							
 				}else{
 					document.getElementById("save_result").style.color = "red";
 					document.getElementById("save_result").innerHTML = "Error Occured! Please try Again.";
@@ -175,60 +256,13 @@ function save(){
 	http.send(parameters); 
 }
 
-function editProduct(){
-	var product = document.getElementById("products").value;
-	if(product == "-"){
-		inlineMsg('products','<strong>Error</strong><br />Please select the Product you want to Edit!',2);
-	}else{
-		window.location = "edit_product.php?id="+product;		
-	}
-}
-
-function deleteProduct(){
-	var product = document.getElementById("products").value;
-	if(product == "-"){	
-		inlineMsg('products','<strong>Error</strong><br />Please select the Product you want to Delete!',2);
-	}else{
-		var result = confirm("Are You Sure! You want to delete this Product?");
-		if(result){
-			document.getElementById("delete_result").innerHTML = "<img src='images/loading.gif'>";
-			var urlString = "product.logic.php";
-			var parameters = "chksql=deleteProduct&id="+product;
-			//alert(urlString);			
-			var http = getHTTPObject();
-			http.open("POST", urlString , true);
-			http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-			http.onreadystatechange = function() {
-				if (http.readyState == 4){
-					if (http.status == 200) {
-						var result = http.responseText;
-						document.getElementById("delete_result").innerHTML = "";
-						if(result.indexOf("SUCCESS") > -1){
-							document.getElementById("delete_result").style.color = "blue";
-							document.getElementById("delete_result").innerHTML = "Product Deleted Successfully!";		
-							init();					
-						}else{
-							document.getElementById("delete_result").style.color = "red";
-							document.getElementById("delete_result").innerHTML = "Error Occured! Please try Again.";
-						}
-						var t=setTimeout("resetPage()",3000);
-					}else{
-						alert("Error Occured : " + http.statusText);
-					}
-				}
-			}
-			http.send(parameters); 	
-		}
-	}
-}
 
 function resetPage(){
 	document.location.reload();
 }	
 
 function startUpload(){
-	var ref_id =  '<?php echo $prod_id; ?>';	
+	var ref_id =  '<?php echo $id; ?>';
 	var valid = true;
 	
 	if(valid) {		
@@ -252,7 +286,7 @@ function startUpload(){
 				document.getElementById("loading_div").innerHTML = "";
 				//Add uploaded file to list
 				var folderName = '';
-				folderName = '<?php echo $prod_id; ?>';
+				folderName = '<?php echo $id; ?>';
 	
 				var extension = '';
 				extension = file.substring(file.indexOf("."),file.length);
@@ -263,7 +297,7 @@ function startUpload(){
 					imageID = response.substring(response.indexOf("#")+1,response.length);
 	
 					var url = '';
-					url = '../product_images/'+folderName+'/th_'+folderName+'_'+imageID+extension;
+					url = '../item_images/'+folderName+'/th_'+folderName+'_'+imageID+extension;
 	
 					var m_files = '';
 					m_files = "<li class='success'><img src='"+url+"?"+randomString()+"'><br/><img src='images/delete.gif'  style='Cursor: pointer' onClick=deleteImage('"+url+"');> Delete</li>";
@@ -280,12 +314,15 @@ function startUpload(){
 function deleteImage(url){
 	var result = confirm("Are you sure! You want to Delete this image?");
 	if(result){
-		var ref_id = '<?php echo $prod_id; ?>';
-		var urlString = "product.logic.php";
-    var parameters = "chksql=deleteProductImage&ref_id="+trim(ref_id)+"&url="+url;
+		var ref_id = '<?php echo $id; ?>';
+		var urlString = "item.logic.php";
+    var parameters = "chksql=deleteItemImage&ref_id="+trim(ref_id)+"&url="+url;
 		var http = getHTTPObject();
 		http.open("POST", urlString , true);
+
 		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		//http.setRequestHeader("Content-length", parameters.length);
+		//http.setRequestHeader("Connection", "close");
 
 		http.onreadystatechange = function() {
 			if (http.readyState == 4){
@@ -324,13 +361,11 @@ function randomString() {
 		randomstring += chars.substring(rnum,rnum+1);
 	}
 	return randomstring;
-}		
-			
+}			
 </script>
 </head>				
 				
-<body onLoad="loadNewMenu(); init();">	
-<input type="hidden" name="hid_member_id" id="hid_member_id" value="">
+<body onLoad="loadNewMenu(); loadDashBoard();">	
   <table width="1087" height="591" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td height="19" align="right" class="body">&nbsp;&nbsp;&nbsp;Logged 
@@ -349,7 +384,7 @@ function randomString() {
                 <td>&nbsp;</td>
               </tr>
               <tr>
-                <td class="header_title" height="20">&nbsp;&nbsp;&nbsp;Backoffice Product Management</td>
+                <td class="header_title" height="20">&nbsp;&nbsp;&nbsp;Backoffice Product Management - Edit Product ID - <?php echo $id; ?></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
@@ -360,7 +395,7 @@ function randomString() {
               <tr>
                 <td>
                 <fieldset class="fieldset">
-                <legend class="legend">Create New Product</legend>
+                <legend class="legend">Update Item</legend>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="body">
                   <tr>
                     <td width="8%">&nbsp;</td>
@@ -371,8 +406,8 @@ function randomString() {
                   </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td>Product Title</td>
-                    <td colspan="2"><input name="name" type="text" class="body" id="name" size="40"></td>
+                    <td>Item Title</td>
+                    <td colspan="2"><input name="name" type="text" class="body" id="name" size="40" value="<?php echo $details['name']; ?>"></td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr>
@@ -384,8 +419,53 @@ function randomString() {
                   </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td>Category</td>
-                    <td><div id="categories_div"></div></td>
+                    <td>Product</td>
+                    <td><div id="products_div"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>                 
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Description</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="3"><textarea cols="80" id="short_desc" name="short_desc" rows="5"><?php echo $details['short_desc']; ?></textarea></td>
+                    <td>&nbsp;</td>
+                  </tr>                  
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td id="specification_label" name="specification_label">Specification</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="3"><textarea class="ckeditor" cols="50" id="description" name="description" rows="15"><?php echo $details['desc']; ?></textarea></td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Price</td>
+                    <td><input type="text" name="price" id="price" class="body" value="<?php echo $details['price']; ?>"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
@@ -396,11 +476,10 @@ function randomString() {
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
-                  
                   <tr>
                     <td>&nbsp;</td>
-                    <td>Brand</td>
-                    <td><div id="brands_div"></div></td>
+                    <td>Stock</td>
+                    <td><input type="text" name="stock" id="stock" class="body" value="<?php echo $details['stock']; ?>"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
@@ -414,7 +493,21 @@ function randomString() {
                   <tr>
                     <td>&nbsp;</td>
                     <td>Reference ID (SKU)</td>
-                    <td><input type="text" name="ref_id" id="ref_id" class="body"></td>
+                    <td><input type="text" name="ref_id" id="ref_id" class="body" value="<?php echo $details['ref_id']; ?>"></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Keywords</td>
+                    <td><input type="text" name="keywords" id="keywords" class="body" value="<?php echo $details['keywords']; ?>"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
@@ -451,28 +544,56 @@ function randomString() {
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                  </tr> 
-                  
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Product Rating</td>
+                    <td><div id="rating_select_div"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Display Badge</td>
+                    <td><div id="badge_select_div"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>                  
+
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
                   <tr>
                     <td>&nbsp;</td>
                     <td>Status</td>
                     <td><div id="status_select_div"></div></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                  </tr>       
-                  
+                  </tr>
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                  </tr>                       
+                  </tr>                  
                   
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td><input type="button" name="submit" id="submit" value="Create Product" class="body" onClick="validateEntry();">
+                    <td><input type="button" name="submit" id="submit" value="Update Item" class="body" onClick="validateEntry();">
                       <input type="button" name="button2" id="button2" value="Reset" class="body" onClick="resetPage();"></td>
                     <td><div id="save_result"></div></td>
                     <td>&nbsp;</td>
@@ -487,6 +608,10 @@ function randomString() {
                 </table>
                 </fieldset>                
                 </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
               </tr>
               <tr>

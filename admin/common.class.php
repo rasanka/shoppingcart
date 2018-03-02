@@ -33,8 +33,9 @@ class Common_Functions extends DB_Manager{
 					"		<li><a href='brand.php'>Add | Edit Brand</a></li> ".
 					//"		<li><a href='supplier.php'>Add | Edit Supplier</a></li> ".
 					"		<li><a href='product.php'>Add Product</a></li> ".
-					"		<li><a href='item.php'>Add Item</a></li> ".
 					"		<li><a href='search_product.php'>Search Product</a></li> ".
+					"		<li><a href='item.php'>Add Item</a></li> ".
+					"		<li><a href='search_item.php'>Search Item</a></li> ".
 					//"		<li><a href='account.php'>Add | Edit Bank Account</a></li> ".
 					"		</ul> ".
 					"	</li> ".

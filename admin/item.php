@@ -7,6 +7,11 @@
 		die();
 	}
 	ob_end_flush();
+
+	require_once("item.class.php");
+  
+  $itemObj = new Item();
+	$item_id = $itemObj -> getItemId();	
 ?>
 <html>
 <head>
@@ -42,8 +47,10 @@ function init(){
 		document.getElementById("name").value = "";
 		loadProductList();    
 		loadStatusList();
-    	loadRatingList();
-    	loadBadgeList();
+    loadRatingList();
+    loadBadgeList();
+		//document.getElementById("ref_id").value = ""; 	
+		//document.getElementById("files").innerHTML ="";
 	}
 }
 
@@ -135,9 +142,9 @@ function loadStatusList(){
 	
 function validateEntry(){
 	var name = document.getElementById("name").value;
-    var product = document.getElementById("products").value;
+  var product = document.getElementById("products").value;
 	//var brand = document.getElementById("brands").value;
-    var short_desc = document.getElementById("short_desc").value;
+  var short_desc = document.getElementById("short_desc").value;
 	var description = CKEDITOR.instances.description.getData();
 	var price = document.getElementById("price").value;
 	var stock = document.getElementById("stock").value;
@@ -176,8 +183,9 @@ function validateEntry(){
 	
 function save(){
 	document.getElementById("save_result").innerHTML = "<img src='images/loading.gif'>";
+	var item_id = '<?php echo $item_id; ?>';
 	var name = document.getElementById("name").value;
-    var product = document.getElementById("products").value;
+  var product = document.getElementById("products").value;
 	var short_desc = document.getElementById("short_desc").value;
 	var description = CKEDITOR.instances.description.getData();
 	var price = document.getElementById("price").value;
@@ -185,11 +193,11 @@ function save(){
 	var ref_id = document.getElementById("ref_id").value;
 	var keywords = document.getElementById("keywords").value;
 	var rating = document.getElementById("rating_select").value;
-    var badge = document.getElementById("badge_select").value;
-    var status = document.getElementById("status_select").value;
+  var badge = document.getElementById("badge_select").value;
+  var status = document.getElementById("status_select").value;
 
 	var urlString = "item.logic.php";
-	var parameters = "chksql=saveItem&name="+escape(name)+"&prod_id="+product+"&short_desc="+escape(short_desc)+
+	var parameters = "chksql=saveItem&item_id="+item_id+"&name="+escape(name)+"&prod_id="+product+"&short_desc="+escape(short_desc)+
   "&desc="+escape(description)+"&price="+price+"&stock="+stock+"&ref_id="+ref_id+"&keywords="+keywords+"&rating="+rating+"&badge="+badge+"&status="+status;	
 
     //alert(parameters);	
@@ -202,6 +210,7 @@ function save(){
 			if (http.status == 200) {
 				var result = http.responseText;
 				document.getElementById("save_result").innerHTML = "";
+				//alert(result);
 				if(result.indexOf("SUCCESS") > -1){
 					document.getElementById("save_result").style.color = "blue";
 					document.getElementById("save_result").innerHTML = "Item Created Successfully!";		
@@ -210,6 +219,7 @@ function save(){
 					document.getElementById("save_result").style.color = "red";
 					document.getElementById("save_result").innerHTML = "Error Occured! Please try Again.";
 				}
+				var t=setTimeout("resetPage()",3000);
 			}else{
 				alert("Error Occured : " + http.statusText);
 			}
@@ -255,10 +265,10 @@ function deleteProduct(){
 							document.getElementById("delete_result").style.color = "red";
 							document.getElementById("delete_result").innerHTML = "Error Occured! Please try Again.";
 						}
-						//var t=setTimeout("resetPage()",3000);
+						var t=setTimeout("resetPage()",3000);
 					}else{
-						//alert("Error Occured : " + http.statusText);
-						}
+						alert("Error Occured : " + http.statusText);
+					}
 				}
 			}
 			http.send(parameters); 	
@@ -271,14 +281,9 @@ function resetPage(){
 }	
 
 function startUpload(){
-	var ref_id =  document.getElementById("ref_id").value;	
+	var ref_id =  '<?php echo $item_id; ?>';	
 	var valid = true;
-	
-	if(ref_id == ""){
-		inlineMsg('ref_id','<strong>Error</strong><br />Please enter the Reference ID!',2);
-		valid = false;
-	}
-	
+
 	if(valid) {		
 		//alert('test');
 		var btnUpload=$('#upload');
@@ -300,7 +305,7 @@ function startUpload(){
 				document.getElementById("loading_div").innerHTML = "";
 				//Add uploaded file to list
 				var folderName = '';
-				folderName = document.getElementById("ref_id").value;
+				folderName = '<?php echo $item_id; ?>';
 	
 				var extension = '';
 				extension = file.substring(file.indexOf("."),file.length);
@@ -328,7 +333,7 @@ function startUpload(){
 function deleteImage(url){
 	var result = confirm("Are you sure! You want to Delete this image?");
 	if(result){
-		var ref_id = trim(document.getElementById("ref_id").value);
+		var ref_id = '<?php echo $item_id; ?>';
 		var urlString = "item.logic.php";
     var parameters = "chksql=deleteProductImage&ref_id="+trim(ref_id)+"&url="+url;
 		var http = getHTTPObject();

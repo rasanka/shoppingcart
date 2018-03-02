@@ -77,7 +77,7 @@ if($m_chksql == "updateProduct"){
 		$msg = $prodObj -> deleteProductImages($id);
 
 		// Re-inserting the images
-		$directory = "../product_images/".$ref_id."/";
+		$directory = "../product_images/".$id."/";
 		$filecount = 0;
 		if (glob($directory . "*.*") != false){
 			$filecount = count(glob($directory . "th_*.*"));
@@ -122,7 +122,7 @@ if($m_chksql == "deleteProduct"){
 	if($level == "ADMIN"){
 		$msg = $prodObj -> deleteProduct($id); 
 
-		$dirPath = "../product_images/".$details['ref_id']."/";	
+		$dirPath = "../product_images/".$id."/";	
 
 		$files = glob($dirPath . '*', GLOB_MARK);
     	foreach ($files as $file) {

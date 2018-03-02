@@ -39,71 +39,38 @@ MM_reloadPage(true);
 function init(){
 	var level = "<?php echo $_SESSION["ses_user_level"]; ?>";
 	if(level == "ADMIN"){
-        loadCategoryList();    
+        loadProductList();    
 	}
 }
 
 function loadProductList(){
 	var urlString = "product.logic.php";
+	var parameters = "chksql=loadProductList";
+	
 	var http = getHTTPObject();
 	http.open("POST", urlString , true);
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	
 	http.onreadystatechange = function() {
 		if (http.readyState == 4){
 			if (http.status == 200) {
-                alert('return');
 				document.getElementById("products_div").innerHTML = http.responseText;
 			}else{
 				alert("Error Occured : " + http.statusText);
 			}
 		}
 	}
-	http.send("chksql=loadProductList"); 		
+	http.send(parameters); 		
 }
 
-function loadCategoryList(){
-	var urlString = "category.logic.php?chksql=loadCategoryListForProduct";
-	var http = getHTTPObject();
-	http.open("GET", urlString , true);
-	http.onreadystatechange = function() {
-		if (http.readyState == 4){
-			if (http.status == 200) {
-				document.getElementById("categories_div").innerHTML = http.responseText;
-                loadBrandListByCategory();
-			}else{
-				alert("Error Occured : " + http.statusText);
-			}
-		}
-	}
-	http.send(null); 		
-}
-
-function loadBrandListByCategory(){
-  var category = document.getElementById("categories").value;
-	var urlString = "brand.logic.php?chksql=loadBrandListByCategory&cat_id="+category;
-	var http = getHTTPObject();
-	http.open("GET", urlString , true);
-	http.onreadystatechange = function() {
-		if (http.readyState == 4){
-			if (http.status == 200) {
-				document.getElementById("brands_div").innerHTML = http.responseText;
-			}else{
-				alert("Error Occured : " + http.statusText);
-			}
-		}
-	}
-	http.send(null); 		
-}
-
-function deleteProduct(pid){
+function deleteItem(pid){
     //alert(pid);
 	var product = pid;
 	var result = confirm("Are You Sure! You want to delete this Product?");
 	if(result){
 		document.getElementById("delete_result").innerHTML = "<img src='images/loading.gif'>";
-		var urlString = "product.logic.php";
-		var parameters = "chksql=deleteProduct&id="+product;
+		var urlString = "item.logic.php";
+		var parameters = "chksql=deleteItem&id="+product;
 		//alert(urlString);			
 		var http = getHTTPObject();
 		http.open("POST", urlString , true);
@@ -123,6 +90,7 @@ function deleteProduct(pid){
 						document.getElementById("delete_result").innerHTML = "Error Occured! Please try Again.";
 					}
 					//var t=setTimeout("resetPage()",3000);
+          searchItems();
 				}
 			}
 		}
@@ -130,23 +98,20 @@ function deleteProduct(pid){
 	}
 }
 
-function searchProducts(){
+function searchItems(){
 	var name = document.getElementById("name").value;
-    var category = document.getElementById("categories").value;
-	var brand = document.getElementById("brands").value;
-    var ref_id = document.getElementById("ref_id").value;
+  var product = document.getElementById("products").value;
+	//var brand = document.getElementById("brands").value;
+  var ref_id = document.getElementById("ref_id").value;
 	
-	if(category == "-"){
-		inlineMsg('categories','<strong>Error</strong><br />Please select the Category!',2);
-    	status = false;
-	} else if(brand == "-"){
-		inlineMsg('brands','<strong>Error</strong><br />Please select the Brand!',2);
+	if(product == "-"){
+		inlineMsg('products','<strong>Error</strong><br />Please select the Product!',2);
     	status = false;
 	} else {		
 		document.getElementById("product_list_div").innerHTML = "<img src='images/loading.gif'>";
-		var urlString = "product.logic.php";
-        var parameters = "chksql=searchProducts&name="+name+"&cat_id="+category+"&brand="+brand+"&ref_id="+ref_id;
-		//alert(urlString);
+		var urlString = "item.logic.php";
+    var parameters = "chksql=searchItems&name="+name+"&prod_id="+product+"&ref_id="+ref_id;
+		alert(parameters);
 		var http = getHTTPObject();
 		http.open("POST", urlString , true);
         http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -221,10 +186,10 @@ function resetPage(){
                   <tr>
                     <td>&nbsp;</td>
                     <td>Category</td>
-                    <td><div id="categories_div"></div></td>
+                    <td><div id="products_div"></div></td>
                     <td>&nbsp;</td>
-                    <td>Brand</td>
-                    <td><div id="brands_div"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>       
 
@@ -261,7 +226,7 @@ function resetPage(){
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td><input type="button" name="submit2" id="submit2" value="Search Products" class="body" onClick="searchProducts();"></td>
+                    <td><input type="button" name="submit2" id="submit2" value="Search Items" class="body" onClick="searchItems();"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>

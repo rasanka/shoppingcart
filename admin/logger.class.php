@@ -15,7 +15,6 @@ class Logger {
 	} 
 
 	function logData($data){
-		/////home/users/web/b2956/d5.ebeesbiz/public_html/edoctor/admin/logs/
 		$log_path = "C:\\wamp64\\www\\phonerepairparts\\admin\\logs\\";
 		$file_name = $log_path. date("Y_m_d").".txt";
 		$data = $data." \r\n";

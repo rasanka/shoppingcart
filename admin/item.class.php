@@ -2,6 +2,10 @@
 require_once("db_manager.class.php");
 
 class Item extends DB_Manager{
+
+	function getItemId() {
+		return $this -> getUID('I');
+	}
 	
 	function getItemList(){
 		$query = " SELECT item_id, item_name FROM tbl_items;  ";
@@ -12,18 +16,22 @@ class Item extends DB_Manager{
 		return $result;
 	}	
 			
-	function saveItem($name,$prod_id,$short_desc,$desc,$price,$stock,$ref_id,$keywords,$status,$rating,$badge){
+	function saveItem($itm_id,$name,$prod_id,$short_desc,$desc,$price,$stock,$ref_id,$keywords,$status,$rating,$badge){
 	
 		$query = " INSERT INTO tbl_items (item_id,item_name,short_desc,item_desc,item_prod,item_price,
 											 item_stock,ref_id,item_keywords,status,rating,badge)
-				   VALUES('".$this -> getUID('I')."','".$name."','".$short_desc."','".$desc."', '".$prod_id."', ".$price.", ".$stock.", '".$ref_id."', '".$keywords."', '".$status."', ".$rating.", '".$badge."');  ";
+				   VALUES('".$itm_id."','".$name."','".$short_desc."','".$desc."', '".$prod_id."', ".$price.", ".$stock.", '".$ref_id."', '".$keywords."', '".$status."', ".$rating.", '".$badge."');  ";
 			 
-		$this -> logData($query);
+		//$this -> logData($query);
 
-		$id = 0;
-		$id = $this -> executeInsertQueryReturnID($query);
-					
-		return $id;
+		$result = $this -> executeInsertQuery($query);
+
+		if($result) {
+			return 'SUCCESS';
+		} else {
+			return 'ERROR';			
+		}
+
 	}	
 
 	function saveItemImage($item_id,$seq_id,$name){
@@ -31,7 +39,7 @@ class Item extends DB_Manager{
 		$query = " INSERT INTO tbl_item_images (item_id, seq_id, image_name)
 				   VALUES('".$item_id."', ".$seq_id.", '".$name."');  ";
 
-		$this -> logData($query);
+		//$this -> logData('saveItemImage QUERY -'.$query);
 			 
 		$result = "";
 		$result = $this -> executeInsertQuery($query);
@@ -45,23 +53,22 @@ class Item extends DB_Manager{
 		return $msg;
 	}	
 		
-	function updateProduct($id,$name,$cat_id,$brand_id,$short_desc,$desc,$price,$stock,$supplier,$keywords,$status,$rating,$badge){
+	function updateItem($id,$name,$prod_id,$ref_id,$short_desc,$desc,$price,$stock,$keywords,$status,$rating,$badge){
 	
-		$query = "  UPDATE tbl_products
-					SET prod_name = '".$name."',
+		$query = "  UPDATE tbl_items
+					SET item_name = '".$name."',
 						short_desc = '".$short_desc."',
-						product_desc = '".$desc."',
-						prod_cat = '".$cat_id."',
-						prod_brand = '".$brand_id."',
-						prod_price = ".$price.",
-						prod_stock = ".$stock.",
-						supplier_id = ".$supplier.",
-						prod_keywords = '".$keywords."',
+						item_desc = '".$desc."',
+						item_prod = '".$prod_id."',
+						ref_id = '".$ref_id."',
+						item_price = ".$price.",
+						item_stock = ".$stock.",
+						item_keywords = '".$keywords."',
 						status = '".$status."',
 						rating = ".$rating.",
 						badge = '".$badge."'
 					WHERE 
-						prod_id = '".$id."';  ";
+						item_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeUpdateQuery($query);
@@ -76,10 +83,10 @@ class Item extends DB_Manager{
 	}		
 	
 	
-	function deleteProduct($id){
+	function deleteItem($id){
 	
-		$query = "  DELETE FROM tbl_products
-					WHERE prod_id = '".$id."';  ";
+		$query = "  DELETE FROM tbl_items
+					WHERE item_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -93,10 +100,10 @@ class Item extends DB_Manager{
 		return $msg;	
 	}
 
-	function deleteProductImages($id){
+	function deleteItemImages($id){
 	
-		$query = "  DELETE FROM tbl_product_images
-					WHERE prod_id = '".$id."';  ";
+		$query = "  DELETE FROM tbl_item_images
+					WHERE item_id = '".$id."';  ";
 			 
 		$result = "";
 		$result = $this -> executeDeleteQuery($query);
@@ -110,11 +117,11 @@ class Item extends DB_Manager{
 		return $msg;	
 	}			
 	
-	function getProductDetailsById($id){
+	function getItemDetailsById($id){
 	
-		$query = "  SELECT prod_name,product_desc,prod_cat,prod_brand,prod_price,prod_stock,ref_id,supplier_id,prod_keywords,status,short_desc,rating,badge 
-					FROM tbl_products
-					WHERE prod_id = '".$id."'; ";
+		$query = "  SELECT item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,status,short_desc,rating,badge 
+					FROM tbl_items
+					WHERE item_id = '".$id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -122,17 +129,15 @@ class Item extends DB_Manager{
 		if(count($result) > 0){
 			$details = array("name"=>$result[0][0], 
 			"desc"=>$result[0][1],
-			"cat_id"=>$result[0][2],
-			"brand_id"=>$result[0][3],
-			"price"=>$result[0][4],
-			"stock"=>$result[0][5],
-			"ref_id"=>$result[0][6],
-			"sup_id"=>$result[0][7],
-			"keywords"=>$result[0][8],
-			"status"=>$result[0][9],
-			"short_desc"=>$result[0][10],
-			"rating"=>$result[0][11],
-			"badge"=>$result[0][12]);
+			"item_prod"=>$result[0][2],
+			"price"=>$result[0][3],
+			"stock"=>$result[0][4],
+			"ref_id"=>$result[0][5],
+			"keywords"=>$result[0][6],
+			"status"=>$result[0][7],
+			"short_desc"=>$result[0][8],
+			"rating"=>$result[0][9],
+			"badge"=>$result[0][10]);
 		
 			return $details;
 		}else{
@@ -140,22 +145,23 @@ class Item extends DB_Manager{
 		}	
 	}
 
-	function getProductImages($pid){
-		$query = " SELECT image_name FROM tbl_product_images WHERE prod_id = '".$pid."' ORDER BY seq_id;  ";
+	function getItemImages($pid){
+		$query = " SELECT image_name FROM tbl_item_images WHERE item_id = '".$pid."' ORDER BY seq_id;  ";
 				 
 		$result = $this -> executeQuery($query);
 			 		
 		return $result;
 	}			
 
-	function searchProducts($name,$cat_id,$brand,$ref_id) {
+	function searchItems($name,$prod_id,$ref_id) {
 		
-		$query = "  SELECT prod_id, prod_name, ref_id, created_date
-					FROM tbl_products
-					WHERE prod_cat = '".$cat_id."' AND prod_brand = '".$brand."'
-					AND UPPER(prod_name) like UPPER('%".$name."%') AND UPPER(ref_id) like UPPER('%".$ref_id."%')
+		$query = "  SELECT item_id, item_name, ref_id, created_date
+					FROM tbl_items
+					WHERE item_prod = '".$prod_id."'
+					AND UPPER(item_name) like UPPER('%".$name."%') AND UPPER(ref_id) like UPPER('%".$ref_id."%')
 					ORDER BY created_date; ";
-									
+
+		$this -> logData($query);			
 		$result = "";
 		$result = $this -> executeQuery($query);	
 		
@@ -163,8 +169,8 @@ class Item extends DB_Manager{
 		$details = array();
 		$details = "";
 		while ($i < count($result)) {
-			$details["prod_id".($i+1)] = $result[$i][0];
-			$details["prod_name".($i+1)] = $result[$i][1];
+			$details["item_id".($i+1)] = $result[$i][0];
+			$details["item_name".($i+1)] = $result[$i][1];
 			$details["ref_id".($i+1)] = $result[$i][2];
 			$details["created_date".($i+1)] = $result[$i][3];
 			

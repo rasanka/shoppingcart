@@ -21,7 +21,7 @@ class Product extends DB_Manager{
 		$query = " INSERT INTO tbl_products (prod_id,prod_name,prod_cat,prod_brand,ref_id,status)
 				   VALUES('".$prod_id."','".$name."','".$cat_id."', '".$brand_id."', '".$ref_id."','".$status."');  ";
 			 
-		$this -> logData($query);
+		//$this -> logData($query);
 
 		$result = $this -> executeInsertQuery($query);
 		if($result) {

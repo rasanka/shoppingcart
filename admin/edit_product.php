@@ -29,7 +29,7 @@
   $i = 0;
 	while ($i < count($imageNames)) {
     // $directory = "../product_images/".$ref_id."/";	
-		$imagePaths = $imagePaths."../product_images/".$details['ref_id']."/".$imageNames[$i][0].'@';			
+		$imagePaths = $imagePaths."../product_images/".$id."/".$imageNames[$i][0].'@';			
 		$i +=1;
 	} 
 
@@ -234,7 +234,7 @@ function startUpload(){
 				document.getElementById("loading_div").innerHTML = "";
 				//Add uploaded file to list
 				var folderName = '';
-				folderName = document.getElementById("ref_id").value;
+				folderName = '<?php echo $id; ?>';
 	
 				var extension = '';
 				extension = file.substring(file.indexOf("."),file.length);
@@ -262,7 +262,7 @@ function startUpload(){
 function deleteImage(url){
 	var result = confirm("Are you sure! You want to Delete this image?");
 	if(result){
-		var ref_id = trim(document.getElementById("ref_id").value);
+		var ref_id = '<?php echo $id; ?>';
 		var urlString = "product.logic.php";
     var parameters = "chksql=deleteProductImage&ref_id="+trim(ref_id)+"&url="+url;
 		var http = getHTTPObject();
