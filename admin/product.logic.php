@@ -70,7 +70,7 @@ if($m_chksql == "updateProduct"){
 	$status= $_POST['status'];
 
 	$msg = '';
-	$msg = $prodObj -> updateProduct($id,$name,$cat_id,$brand_id,$status); 
+	$msg = $prodObj -> updateProduct($id,$name,$cat_id,$brand_id,$ref_id,$status); 
 
 	if($msg == 'SUCCESS') {
 		// Deleting the product images and re-inserting during the update to get the latest
@@ -192,11 +192,17 @@ if($m_chksql == "loadStatusList"){
 if($m_chksql == "deleteProductImage")
 {	
 	$ref_id   = $_POST['ref_id'];
-	$thumbnail    = $_POST['url'];
+	$filename = $_POST['url'];
 	
 	$directory = "../product_images/".$ref_id."/";	
 	
-	$filename = str_replace("th_","",$thumbnail);
+	$file = substr($filename, strrpos($filename, '/')+1, strlen($filename));
+	//$logObj -> logData('FILE -'.$file);	
+	$thumbnail = $directory."th_".$file;
+	//str_replace("th_","",$thumbnail);
+
+	//$logObj -> logData('FILENAME -'.$filename);	
+	//$logObj -> logData('THUMB -'.$thumbnail);	 
 	
 	if (file_exists($filename)) {
 		unlink($filename); 
@@ -207,6 +213,7 @@ if($m_chksql == "deleteProductImage")
 	$images = glob($directory . "th_*.*");
 	$files = ""; 
 	foreach($images as $image){
+		$image = str_replace("th_","",$image);
 		$files = $files.$image."@";
 	}	
 	echo $files;	
@@ -247,7 +254,7 @@ if($m_chksql == "searchProducts"){
 								<td>".$item_details['ref_id'.$rowCount]."</td> 
 								<td>".$item_details['created_date'.$rowCount]."</td> 
 								<td align='center'><a href='edit_product.php?id=".$item_details['prod_id'.$rowCount]."'>Edit</a></td>
-								<td align='center'><a onClick='deleteProduct(".$item_details['prod_id'.$rowCount].");'>Delete</a></td>
+								<td align='center'><a onClick='deleteProduct('".$item_details['prod_id'.$rowCount]."');'>Delete</a></td>
 							</tr>  ";	
 				
 			$rowCount += 1;		

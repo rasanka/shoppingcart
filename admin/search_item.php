@@ -64,7 +64,7 @@ function loadProductList(){
 }
 
 function deleteItem(pid){
-    //alert(pid);
+  alert(pid);
 	var product = pid;
 	var result = confirm("Are You Sure! You want to delete this Product?");
 	if(result){
@@ -111,7 +111,7 @@ function searchItems(){
 		document.getElementById("product_list_div").innerHTML = "<img src='images/loading.gif'>";
 		var urlString = "item.logic.php";
     var parameters = "chksql=searchItems&name="+name+"&prod_id="+product+"&ref_id="+ref_id;
-		alert(parameters);
+		//alert(parameters);
 		var http = getHTTPObject();
 		http.open("POST", urlString , true);
         http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

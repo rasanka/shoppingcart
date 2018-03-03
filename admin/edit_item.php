@@ -312,6 +312,7 @@ function startUpload(){
 }
 
 function deleteImage(url){
+  alert('DEL IMG -'+url);
 	var result = confirm("Are you sure! You want to Delete this image?");
 	if(result){
 		var ref_id = '<?php echo $id; ?>';
@@ -340,6 +341,7 @@ function deleteImage(url){
 }
 
 function loadImages(imagepaths){
+  alert('LOAD -'+imagepaths);
 	var m_files =  '';
 	m_files = trim(imagepaths).split('@');	
 	document.getElementById("files").innerHTML = "";

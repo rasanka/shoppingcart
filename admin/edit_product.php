@@ -168,7 +168,7 @@ function update(){
 	var name = document.getElementById("name").value;
 	var category = document.getElementById("categories").value;
 	var brand = document.getElementById("brands").value;
-  	var ref_id = document.getElementById("ref_id").value;
+  var ref_id = document.getElementById("ref_id").value;
 	var status = document.getElementById("status_select").value;
 	
 	var urlString = "product.logic.php";
@@ -191,7 +191,7 @@ function update(){
 					document.getElementById("save_result").style.color = "red";
 					document.getElementById("save_result").innerHTML = "Error Occured! Please try Again.";
 				}
-				//var t=setTimeout("resetPage()",3000);
+				var t=setTimeout("resetPage()",3000);
 			}else{
 				//alert("Error Occured : " + http.statusText);
 				}
@@ -205,14 +205,9 @@ function resetPage(){
 }	
 
 function startUpload(){
-	var ref_id =  document.getElementById("ref_id").value;	
+	var ref_id =  "<?php echo $id; ?>";	
 	var valid = true;
-	
-	if(ref_id == ""){
-		inlineMsg('ref_id','<strong>Error</strong><br />Please enter the Reference ID!',2);
-		valid = false;
-	}
-	
+
 	if(valid) {		
 		//alert('test');
 		var btnUpload=$('#upload');
@@ -260,6 +255,7 @@ function startUpload(){
 }
 
 function deleteImage(url){
+	//alert('DELETE IMAGE ->'+url);
 	var result = confirm("Are you sure! You want to Delete this image?");
 	if(result){
 		var ref_id = '<?php echo $id; ?>';
@@ -288,6 +284,7 @@ function deleteImage(url){
 }
 
 function loadImages(imagepaths){
+	//alert('LOAD IMAGES -'+imagepaths);
 	var m_files =  '';
 	m_files = trim(imagepaths).split('@');	
 	document.getElementById("files").innerHTML = "";
@@ -397,7 +394,7 @@ function randomString() {
                   <tr>
                     <td>&nbsp;</td>
                     <td>Reference ID (SKU)</td>
-                    <td><input type="text" name="ref_id" id="ref_id" class="body"  value="<?php echo $details['ref_id']; ?>" disabled></td>
+                    <td><input type="text" name="ref_id" id="ref_id" class="body"  value="<?php echo $details['ref_id']; ?>"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>

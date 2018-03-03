@@ -50,12 +50,13 @@ class Product extends DB_Manager{
 		return $msg;
 	}	
 		
-	function updateProduct($id,$name,$cat_id,$brand_id,$status){
+	function updateProduct($id,$name,$cat_id,$brand_id,$ref_id,$status){
 	
 		$query = "  UPDATE tbl_products
 					SET prod_name = '".$name."',
 						prod_cat = '".$cat_id."',
 						prod_brand = '".$brand_id."',
+						ref_id = '".$ref_id."',
 						status = '".$status."'
 					WHERE 
 						prod_id = '".$id."';  ";

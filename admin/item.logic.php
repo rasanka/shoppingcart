@@ -204,11 +204,17 @@ if($m_chksql == "loadStatusList"){
 if($m_chksql == "deleteItemImage")
 {	
 	$ref_id   = $_POST['ref_id'];
-	$thumbnail    = $_POST['url'];
+	$filename = $_POST['url'];
 	
 	$directory = "../item_images/".$ref_id."/";	
 	
-	$filename = str_replace("th_","",$thumbnail);
+	$file = substr($filename, strrpos($filename, '/')+1, strlen($filename));
+	//$logObj -> logData('FILE -'.$file);	
+	$thumbnail = $directory."th_".$file;
+	//str_replace("th_","",$thumbnail);
+
+	//$logObj -> logData('FILENAME -'.$filename);	
+	//$logObj -> logData('THUMB -'.$thumbnail);	 
 	
 	if (file_exists($filename)) {
 		unlink($filename); 
@@ -219,6 +225,7 @@ if($m_chksql == "deleteItemImage")
 	$images = glob($directory . "th_*.*");
 	$files = ""; 
 	foreach($images as $image){
+		$image = str_replace("th_","",$image);
 		$files = $files.$image."@";
 	}	
 	echo $files;	
@@ -258,7 +265,7 @@ if($m_chksql == "searchItems"){
 								<td>".$item_details['ref_id'.$rowCount]."</td> 
 								<td>".$item_details['created_date'.$rowCount]."</td> 
 								<td align='center'><a href='edit_item.php?id=".$item_details['item_id'.$rowCount]."'>Edit</a></td>
-								<td align='center'><a onClick='deleteItem(".$item_details['item_id'.$rowCount].");'>Delete</a></td>
+								<td align='center'><a onClick='deleteItem('".$item_details['item_id'.$rowCount]."');'>Delete</a></td>
 							</tr>  ";	
 				
 			$rowCount += 1;		
