@@ -270,7 +270,7 @@
                     $popular_products_html = $popular_products_html."
                         <li>
                             <figure>
-                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$ref_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
+                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
                                 <a class='aa-add-card-btn' pid='".$prod_id."' pprice='".$products['item_price'.$rowCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
                                 <figcaption>
                                     <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
@@ -311,7 +311,7 @@
                     $featured_products_html = $featured_products_html."
                         <li>
                             <figure>
-                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$ref_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
+                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
                                 <a class='aa-add-card-btn' pid='".$prod_id."' pprice='".$products['item_price'.$rowCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
                                 <figcaption>
                                     <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
@@ -352,7 +352,7 @@
                     $latest_products_html = $latest_products_html."
                         <li>
                             <figure>
-                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$ref_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
+                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
                                 <a class='aa-add-card-btn' pid='".$prod_id."' pprice='".$products['item_price'.$rowCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
                                 <figcaption>
                                     <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>

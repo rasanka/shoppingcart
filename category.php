@@ -113,7 +113,7 @@
 						  $products_html = $products_html." 
 							<li>
 							  <figure>
-								<a class='aa-product-img' href='index.php?page=item&pid=".$prod_array['item_id'.$itemCount]."'><img width='250' height='300' src='item_images/".$prod_array['ref_id'.$itemCount]."/".$prod_image['image_name']."' alt='".$prod_array['item_name'.$itemCount]."'></a>
+								<a class='aa-product-img' href='index.php?page=item&pid=".$prod_array['item_id'.$itemCount]."'><img width='250' height='300' src='item_images/".$prod_array['item_id'.$itemCount]."/".$prod_image['image_name']."' alt='".$prod_array['item_name'.$itemCount]."'></a>
 								<a class='aa-add-card-btn' pid='".$prod_array['item_id'.$itemCount]."' pprice='".$prod_array['item_price'.$itemCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
 								<figcaption>
 								  <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$prod_array['item_id'.$itemCount]."'>".$prod_array['item_name'.$itemCount]."</a></h4>
@@ -316,7 +316,7 @@
                               
                       echo "
                           <li>
-                            <a href='index.php?page=product&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$ref_id."/".$prod_image['image_name']."'></a>
+                            <a href='index.php?page=product&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$prod_id."/".$prod_image['image_name']."'></a>
                             <div class='aa-cartbox-info'>
                               <h4><a href='index.php?page=product&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
                               <p>1 x $".$products['item_price'.$rowCount]."</p>
@@ -366,7 +366,7 @@
                               
                       echo "
                           <li>
-                            <a href='index.php?page=item&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$ref_id."/".$prod_image['image_name']."'></a>
+                            <a href='index.php?page=item&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$prod_id."/".$prod_image['image_name']."'></a>
                             <div class='aa-cartbox-info'>
                               <h4><a href='index.php?page=item&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
                               <p>1 x $".$products['item_price'.$rowCount]."</p>

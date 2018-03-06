@@ -85,7 +85,7 @@
                               <div class='simpleLens-container'>
                                   <div class='simpleLens-big-image-container'>
                                       <a>
-                                          <img href='index.php?page=item&pid=".$pid."' width='250' height='300' src='item_images/".$details['ref_id']."/".$prod_image['image_name']."' class='simpleLens-big-image'>
+                                          <img href='index.php?page=item&pid=".$pid."' width='250' height='300' src='item_images/".$pid."/".$prod_image['image_name']."' class='simpleLens-big-image'>
                                       </a>
                                   </div>
                               </div>
@@ -104,8 +104,8 @@
 
         echo "
             <a href='#' class='simpleLens-thumbnail-wrapper'
-              data-big-image='item_images/".$details['ref_id']."/".$img_array['image_name'.$itemCount]."'>
-                <img width='45' height='55'  src='item_images/".$details['ref_id']."/".$img_array['image_name'.$itemCount]."'>
+              data-big-image='item_images/".$pid."/".$img_array['image_name'.$itemCount]."'>
+                <img width='45' height='55'  src='item_images/".$pid."/".$img_array['image_name'.$itemCount]."'>
             </a>                  
         ";
 
