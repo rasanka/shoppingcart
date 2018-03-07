@@ -22,7 +22,7 @@ class Category extends DB_Manager {
 	function loadBrandByID($brand_id){
 	
 		$query = "  SELECT brand_name FROM tbl_brands
-					WHERE brand_id = '".$brand_id."'; ";
+					WHERE brand_id = '".$brand_id."' ORDER BY brand_name; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -38,7 +38,8 @@ class Category extends DB_Manager {
 	function loadCategories(){
 	
 		$query = "  SELECT cat_id, cat_name
-					FROM tbl_categories; ";
+					FROM tbl_categories 
+					ORDER BY created_date; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	

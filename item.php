@@ -11,7 +11,7 @@
 
     $prod_image = $itemObj -> loadMainItemImage($pid);
 
-    $image_path = "item_images/".$details['ref_id']."/".$prod_image['image_name'];
+    $image_path = "item_images/".$pid."/".$prod_image['image_name'];
 
   ?>    
     
@@ -71,9 +71,9 @@
                             while($j < (count($img_array)/2)){
 
                               echo "
-                                    <a data-big-image='item_images/".$details['ref_id']."/".$img_array['image_name'.$itemCount]."'
+                                    <a data-big-image='item_images/".$pid."/".$img_array['image_name'.$itemCount]."'
                                       class='simpleLens-thumbnail-wrapper' href='#'>
-                                      <img width='45' height='55' src='item_images/".$details['ref_id']."/".$img_array['image_name'.$itemCount]."'>
+                                      <img width='45' height='55' src='item_images/".$pid."/".$img_array['image_name'.$itemCount]."'>
                                     </a>               
                               ";
 
@@ -269,7 +269,7 @@
                     $popular_products_html = $popular_products_html."
                         <li>
                             <figure>
-                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$ref_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
+                                <a class='aa-product-img' href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='".$products['item_name'.$rowCount]."'></a>
                                 <a class='aa-add-card-btn' pid='".$item_id."' pprice='".$products['item_price'.$rowCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
                                 <figcaption>
                                     <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$item_id."'>".$products['item_name'.$rowCount]."</a></h4>

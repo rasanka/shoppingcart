@@ -92,32 +92,36 @@
               
               <div class="col-md-6">
               	 <h4>Billing Address</h4>
+
+                    <div id="locationField">
+                        <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                    </div>
                  
                     <div class="form-group">
                         <label class="col-md-3 control-label">House/Unit #</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="houseNo" id="houseNo" placeholder="House / Unit No." />
+                            <input type="text" class="form-control" name="street_number" id="street_number" placeholder="House / Unit No." />
                         </div>
                     </div>
                 
                     <div class="form-group">
                         <label class="col-md-3 control-label">Street</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="street" id="street" placeholder="Street Name" />
+                            <input type="text" class="form-control" name="route" id="route" placeholder="Street Name" />
                         </div>
                     </div>
                               
                     <div class="form-group">
                         <label class="col-md-3 control-label">City</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="city" id="city" placeholder="Ex: Huntingdale" />
+                            <input type="text" class="form-control" name="locality" id="locality" placeholder="City" />
                         </div>
                     </div>     
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Region</label>
+                        <label class="col-md-3 control-label">Suburb</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="region" id="region" placeholder="Ex: Western Australia" />
+                            <input type="text" class="form-control" name="administrative_area_level_1" id="administrative_area_level_1" placeholder="Suburb" />
                         </div>
                     </div>                                                      
                    
@@ -125,7 +129,7 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Postal Code</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="postalCode" id="postalCode" placeholder="Postal code" />
+                            <input type="text" class="form-control" name="postal_code" id="postal_code" placeholder="Postal code" />
                         </div>
                     </div>
                       
@@ -134,13 +138,69 @@
                         <div class="col-md-8">
                               <div class="aa-checkout-country">
                                 <select name="country" id="country">
-                                  <option value="-">Select Your Country</option>
-                                  <option value="AUS" selected="true">Australia</option>                                  
+                                  <option value="NZ" selected="true">New Zealand</option>                                  
                                 </select>
                               </div>                                                         
                         </div>
                     </div>                                                                          
               </div>
+
+<script>
+      var placeSearch, autocomplete;
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'short_name',
+        postal_code: 'short_name'
+      };
+
+      function initAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('autocomplete')),
+            {types: ['geocode']});
+
+        autocomplete.addListener('place_changed', fillInAddress);
+      }
+
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+
+        for (var component in componentForm) {
+          document.getElementById(component).value = '';
+          document.getElementById(component).disabled = false;
+        }
+
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+            var val = place.address_components[i][componentForm[addressType]];
+            document.getElementById(addressType).value = val;
+          }
+        }
+      }
+
+      function geolocate() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+              center: geolocation,
+              radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+          });
+        }
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqV2ogFZwb82VyVDdb8-naSe_fwnc2msE&libraries=places&callback=initAutocomplete" async defer></script>
+
+
             </div>          
          <!--</div>-->
          </form>
