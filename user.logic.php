@@ -2,11 +2,13 @@
 require_once ("config/config.php");
 require_once ("user.class.php");
 require_once ("mail_logic.class.php");
+require_once ("logger.class.php");
 
 $m_chk = $_GET['check'];
 
 $userObj = new User();
 $mailObj = new MailLogic();
+$logger = new Logger();
 
 if($m_chk == "register"){
 
@@ -15,11 +17,11 @@ if($m_chk == "register"){
 	$l_name = $_POST['lastName'];
 	$contact = $_POST['contact'];
 	$password = $_POST['reg_password'];
-	$houseNo = $_POST['houseNo'];
-	$street = $_POST['street'];
-	$city = $_POST['city'];
-	$region = $_POST['region'];
-	$postal = $_POST['postalCode'];
+	$houseNo = $_POST['street_number'];
+	$street = $_POST['route'];
+	$city = $_POST['locality'];
+	$region = $_POST['administrative_area_level_1'];
+	$postal = $_POST['postal_code'];
 	$country = $_POST['country'];
 	
 	$msg = "";
@@ -33,8 +35,10 @@ if($m_chk == "register"){
 		$msg = "User already exists with the email address ".$email;
 	}else{
 		$userId = $userObj -> saveUser($f_name,$l_name,$email,$contact,$password,$houseNo,$street,$city,$region,$postal,$country);
-		
-		if($userId > 0) {
+
+		//$logger -> logData('USER -'.$userId);
+
+		if($userId <> 'ERROR') {
 
 			require_once("activation_mail.tpl.php");
 

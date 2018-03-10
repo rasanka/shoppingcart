@@ -289,16 +289,7 @@ $(document).ready(function() {
 						message: 'Please agree with terms and conditions'
 					},
 				}
-			},		
-
-            houseNo: {
-                validators: {
-                    regexp: {
-                        regexp: /^[0-9]+$/,
-                        message: 'The house no can only consist of numbers'
-                    }                   
-                }
-            },            				
+			},		           				
         },
         
         submitHandler: function(validator, form, submitButton) {

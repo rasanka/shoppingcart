@@ -41,11 +41,10 @@
                             $encUserId = $_GET['id'];
                             $userId = base64_decode($encUserId);
 
-                            if(is_numeric($userId)) {
-                                $data = $userObj -> getUserDetailsById($userId);
-                            } else {
-                                $data = "NO_DATA";
-                            }
+                            $data = $userObj -> getUserDetailsById($userId);
+                            if(count($data) == 0) {
+                              $data = "NO_DATA";  
+                            } 
                             
                             if($data == "NO_DATA") {
                                 echo "

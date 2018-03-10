@@ -19,15 +19,19 @@ class User extends DB_Manager {
 	
 	function saveUser($fname,$lname,$email,$contact,$password,$houseNo,$street,$city,$region,$postal,$country){
 
-		if(!isset($houseNo) || empty($houseNo)) { $houseNo = 'null'; }
+		//if(!isset($houseNo) || empty($houseNo)) { $houseNo = 'null'; }
 	
+		$user_id  = $this -> getUID('U');
 		$query = "INSERT INTO tbl_users (user_id,first_name,last_name,email,contact_no,password,billing_house_no,billing_street,billing_city,billing_region,billing_postal_code,billing_country,registered_date,user_status) 
-				  VALUES('".$this -> getUID('U')."','".$fname."','".$lname."','".$email."','".$contact."','".$password."',".$houseNo.",NULLIF('".$street."',''),NULLIF('".$city."',''),NULLIF('".$region."',''),NULLIF('".$postal."',''),'".$country."',now(),'INACTIVE'); ";
+				  VALUES('".$user_id."','".$fname."','".$lname."','".$email."','".$contact."','".$password."','".$houseNo."',NULLIF('".$street."',''),NULLIF('".$city."',''),NULLIF('".$region."',''),NULLIF('".$postal."',''),'".$country."',now(),'INACTIVE'); ";
 
-		$userId = 0;
-		$userId = $this -> executeInsertQueryReturnID($query);
-			
-		return $userId;
+		//$userId = 0;
+		$result = $this -> executeInsertQuery($query);
+		if($result) {	
+			return $user_id;
+		} else {
+			return 'ERROR';
+		}
 	}
 
 	function updateUserPassword($user_id, $password) {
