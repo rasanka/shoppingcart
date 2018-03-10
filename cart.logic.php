@@ -117,9 +117,9 @@
                             
                         $cart_items_html = $cart_items_html. "
                             <li id='row".$itemCount."'>
-                                <a class='aa-cartbox-img' href='index.php?page=product&pid=".$prod_id."'><img width='150' height='150' src='item_images/".$prod_array['ref_id']."/".$prod_image['image_name']."' alt='img'></a>
+                                <a class='aa-cartbox-img' href='index.php?page=item&pid=".$prod_id."'><img width='150' height='150' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='img'></a>
                                 <div class='aa-cartbox-info'>
-                                    <h4><a href='index.php?page=product&pid=".$prod_id."'>".$prod_array['prod_name']."</a></h4>
+                                    <h4><a href='index.php?page=item&pid=".$prod_id."'>".$prod_array['prod_name']."</a></h4>
                                     <p>".$prod_qty." x $".$prod_array['prod_price']."</p>
                                 </div>
                                 <a pid=".$prod_id." rowid=".$itemCount." class='aa-remove-product' href='#'><span class='fa fa-times'></span></a>

@@ -518,6 +518,7 @@
         event.preventDefault();
         var pid = $(this).attr('pid');
         var price = $(this).attr('pprice');
+        //alert(pid);
         $.ajax({
           url : "cart.logic.php",
           method : "POST",
@@ -548,6 +549,7 @@
         var pid = $(this).attr('pid');
         var price = $(this).attr('pprice');
         var qty = $('#product_qty').val();
+        //alert(pid);
         $.ajax({
           url : "cart.logic.php",
           method : "POST",

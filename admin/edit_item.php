@@ -180,7 +180,7 @@ function validateEntry(){
 	var price = document.getElementById("price").value;
 	var stock = document.getElementById("stock").value;
 	var ref_id = document.getElementById("ref_id").value;
-	//var supplier = document.getElementById("suppliers").value;
+	var delivery = document.getElementById("delivery").value;
 	
 	var status = true;
 	
@@ -205,6 +205,9 @@ function validateEntry(){
 	} else if(ref_id == ""){
 		inlineMsg('ref_id','<strong>Error</strong><br />Please enter the Reference ID!',2);
 		status = false;
+	} else if(delivery == ""){
+		inlineMsg('delivery','<strong>Error</strong><br />Please enter the Delivery amount!',2);
+		status = false;
 	} 
 	  
 	if(status){
@@ -221,6 +224,7 @@ function update(){
 	var price = document.getElementById("price").value;
 	var stock = document.getElementById("stock").value;
 	var ref_id = document.getElementById("ref_id").value;
+  var delivery = document.getElementById("delivery").value;
 	var keywords = document.getElementById("keywords").value;
 	var status = document.getElementById("status_select").value;
 	var rating = document.getElementById("rating_select").value;
@@ -228,7 +232,7 @@ function update(){
 
 	var urlString = "item.logic.php";
 	var parameters = "chksql=updateItem&id="+id+"&name="+escape(name)+"&prod_id="+product+"&short_desc="+escape(short_desc)+
-  "&desc="+escape(desc)+"&price="+price+"&stock="+stock+"&ref_id="+ref_id+"&keywords="+keywords+"&status="+status+"&rating="+rating+"&badge="+badge; 
+  "&desc="+escape(desc)+"&price="+price+"&stock="+stock+"&ref_id="+ref_id+"&delivery="+delivery+"&keywords="+keywords+"&status="+status+"&rating="+rating+"&badge="+badge; 
 
   //alert(parameters);
 	var http = getHTTPObject();
@@ -312,7 +316,7 @@ function startUpload(){
 }
 
 function deleteImage(url){
-  alert('DEL IMG -'+url);
+  //alert('DEL IMG -'+url);
 	var result = confirm("Are you sure! You want to Delete this image?");
 	if(result){
 		var ref_id = '<?php echo $id; ?>';
@@ -341,7 +345,7 @@ function deleteImage(url){
 }
 
 function loadImages(imagepaths){
-  alert('LOAD -'+imagepaths);
+  //alert('LOAD -'+imagepaths);
 	var m_files =  '';
 	m_files = trim(imagepaths).split('@');	
 	document.getElementById("files").innerHTML = "";
@@ -499,6 +503,21 @@ function randomString() {
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Delivery</td>
+                    <td><input type="text" name="delivery" id="delivery" class="body" value="<?php echo $details['delivery']; ?>"></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>

@@ -149,7 +149,7 @@ function validateEntry(){
 	var price = document.getElementById("price").value;
 	var stock = document.getElementById("stock").value;
 	var ref_id = document.getElementById("ref_id").value;
-	//var supplier = document.getElementById("suppliers").value;
+	var delivery = document.getElementById("delivery").value;
 	
 	var status = true;
 	
@@ -174,6 +174,9 @@ function validateEntry(){
 	} else if(ref_id == ""){
 		inlineMsg('ref_id','<strong>Error</strong><br />Please enter the Reference ID!',2);
 		status = false;
+	} else if(delivery == ""){
+		inlineMsg('delivery','<strong>Error</strong><br />Please enter the Delivery Amount!',2);
+		status = false;
 	} 
 	  
 	if(status){
@@ -191,6 +194,7 @@ function save(){
 	var price = document.getElementById("price").value;
 	var stock = document.getElementById("stock").value;
 	var ref_id = document.getElementById("ref_id").value;
+	var delivery = document.getElementById("delivery").value;
 	var keywords = document.getElementById("keywords").value;
 	var rating = document.getElementById("rating_select").value;
   var badge = document.getElementById("badge_select").value;
@@ -198,7 +202,7 @@ function save(){
 
 	var urlString = "item.logic.php";
 	var parameters = "chksql=saveItem&item_id="+item_id+"&name="+escape(name)+"&prod_id="+product+"&short_desc="+escape(short_desc)+
-  "&desc="+escape(description)+"&price="+price+"&stock="+stock+"&ref_id="+ref_id+"&keywords="+keywords+"&rating="+rating+"&badge="+badge+"&status="+status;	
+  "&desc="+escape(description)+"&price="+price+"&stock="+stock+"&ref_id="+delivery+"&delivery="+ref_id+"&keywords="+keywords+"&rating="+rating+"&badge="+badge+"&status="+status;	
 
     //alert(parameters);	
 	var http = getHTTPObject();
@@ -515,6 +519,20 @@ function randomString() {
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Delivery</td>
+                    <td><input type="text" name="delivery" id="delivery" class="body"></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>							
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>

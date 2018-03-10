@@ -186,17 +186,22 @@ class Cart extends DB_Manager {
         $details = $this -> isCartAvailable($user_id, 'INCOMPLETE');
 		if($details['item_count'] == 0) {
 
-            $query = "  INSERT INTO tbl_cart (user_id, total_price, ip_addr, cart_status, created_datetime) 
-                        VALUES('".$user_id."',".floatval(intval($qty)*floatval($unit_price)).",'".$this -> getClientIP()."', 'INCOMPLETE', now()); ";
+			$cart_id = $this -> getUID('C');
+            $query = "  INSERT INTO tbl_cart (cart_id, user_id, total_price, ip_addr, cart_status, created_datetime) 
+                        VALUES('".$cart_id."','".$user_id."',".floatval(intval($qty)*floatval($unit_price)).",'".$this -> getClientIP()."', 'INCOMPLETE', now()); ";
 
-            $result = "";
-            $inserted_cart_id = $this -> executeInsertQueryReturnID($query);
-
-            $query = "  INSERT INTO tbl_cart_items (cart_id, prod_id, qty, unit_price) 
-                        VALUES('".$inserted_cart_id."','".$prod_id."',".intval($qty).",".floatval($unit_price)."); ";
-                
+            //$result = "";
             $result = $this -> executeInsertQuery($query);
-            return $inserted_cart_id;
+
+			if($result) {
+				$query = "  INSERT INTO tbl_cart_items (cart_id, prod_id, qty, unit_price) 
+							VALUES('".$cart_id."','".$prod_id."',".intval($qty).",".floatval($unit_price)."); ";
+					
+				$result = $this -> executeInsertQuery($query);
+				return $cart_id;
+			} else {
+            	return "ERROR";
+        	}
         } else {
             return "ERROR";
         }
