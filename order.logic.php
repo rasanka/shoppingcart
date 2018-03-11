@@ -17,6 +17,8 @@
         $cart_id = $_SESSION['sitcart'];
         $user_id = $_SESSION['sitid'];
 
+        //$logObj -> logData('CART -'.$cart_id.' USER  -'.$user_id);
+
         $bill_fname = $_POST['billFName'];
         $bill_lname = $_POST['billLName'];
         $bill_company = $_POST['billCompany'];
@@ -47,20 +49,25 @@
         $deli_note = $_POST['delvNote'];
         $payment_method = $_POST['optionsRadios'];
 
+        $delivery_amount = $_POST['delivery_amt'];
+
         $delivery_name = $deli_fname." ".$deli_lname;
         $delivery_addr = $deli_house_no.", ".$deli_street.", ".$deli_city.", ".$deli_region.", ".$deli_country.", ".$deli_postal;
+
+        //$logObj -> logData('DELIVERY ADDR -'.$delivery_addr);
 
         $cart_tot_array = $cartObj -> getCartTotal($cart_id);
         $cart_total = $cart_tot_array['cart_total'];
 
-        $tax_amount = 0;//(7 / 100) * $cart_total;
-        $order_total = floatval($cart_total + $tax_amount);
+        //$tax_amount = 0;//(7 / 100) * $cart_total;
+        $order_total = floatval($cart_total + $delivery_amount);
 
         $order_id = 0;
-        $order_id = $orderObj -> createOrder($cart_id, $user_id, $cart_total, $tax_amount, $order_total, $billing_name, $bill_company, $bill_email, $bill_contact, $billing_addr,$delivery_name, $deli_company, $deli_email, $deli_contact, $delivery_addr, $deli_note, $payment_method, 'PENDING_PAYMENT');
+        $order_id = $orderObj -> createOrder($cart_id, $user_id, $cart_total, $delivery_amount, $order_total, $billing_name, $bill_company, $bill_email, $bill_contact, $billing_addr,$delivery_name, $deli_company, $deli_email, $deli_contact, $delivery_addr, $deli_note, $payment_method, 'PENDING_PAYMENT');
+        //$logObj -> logData('ORDER -'.$order_id);
 
         $msg = '';
-        if($order_id > 0) {
+        if($order_id <> 'ERROR') {
             // Creating a session object to track the order
             $_SESSION['sitorder'] = $order_id;
           

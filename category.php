@@ -316,9 +316,9 @@
                               
                       echo "
                           <li>
-                            <a href='index.php?page=product&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$prod_id."/".$prod_image['image_name']."'></a>
+                            <a href='index.php?page=item&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$prod_id."/".$prod_image['image_name']."'></a>
                             <div class='aa-cartbox-info'>
-                              <h4><a href='index.php?page=product&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
+                              <h4><a href='index.php?page=item&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
                               <p>1 x $".$products['item_price'.$rowCount]."</p>
                             </div>                    
                           </li>                          

@@ -6,7 +6,7 @@ class Item extends DB_Manager {
 
 	function loadItemByID($item_id){
 	
-		$query = "  SELECT item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge
+		$query = "  SELECT item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge,delivery
 					FROM tbl_items
 					WHERE item_id = '".$item_id."' and status = 'SHOW'; ";
 				 
@@ -25,7 +25,8 @@ class Item extends DB_Manager {
 				"item_keywords"=>$result[0][6],
 				"short_desc"=>$result[0][7],
 				"rating"=>$result[0][8],
-				"badge"=>$result[0][9]);	
+				"badge"=>$result[0][9],
+				"delivery"=>$result[0][10]);	
 		}
 		return $details;
 	}

@@ -168,7 +168,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT count(*)
 					FROM tbl_cart_items
-					WHERE cart_id = '".$cart_id."' AND prod_id = ".$prod_id."; ";
+					WHERE cart_id = '".$cart_id."' AND prod_id = '".$prod_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);

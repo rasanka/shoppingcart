@@ -101,8 +101,8 @@
     
                                   echo "
                                       <tr>
-                                        <td><a href='index.php?page=product&pid=".$prod_id."'><img width='100' height='100' src='item_images/".$prod_array['ref_id']."/".$prod_image['image_name']."' alt='img'></a></td>
-                                        <td><a href='index.php?page=product&pid=".$prod_id."'>".$prod_array['item_name']."</a></td>
+                                        <td><a href='index.php?page=item&pid=".$prod_id."'><img width='100' height='100' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='img'></a></td>
+                                        <td><a href='index.php?page=item&pid=".$prod_id."'>".$prod_array['item_name']."</a></td>
                                         <td>".$prod_qty."</td>
                                         <td>$".$prod_array['item_price']."</td>
                                         <td>$".$item_total."</td>
@@ -123,8 +123,8 @@
                           <td>$<?php echo $order_details['cart_total']; ?></td>
                         </tr>
                          <tr>
-                          <th colspan="4">Tax</th>
-                          <td>$<?php echo $order_details['tax_amount']; ?></td>
+                          <th colspan="4">Delivery</th>
+                          <td>$<?php echo $order_details['delivery_amount']; ?></td>
                         </tr>
                          <tr>
                           <th colspan="4">Total</th>

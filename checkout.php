@@ -29,12 +29,12 @@
 
   require_once("cart.class.php");
   require_once("user.class.php");
-  require_once("product.class.php");
+  require_once("item.class.php");
   require_once("logger.class.php");
 
   $cartObj = new Cart();
   $userObj = new User();
-  $productObj = new Product();
+  $itemObj = new Item();
   $logger = new Logger();
 
   $userDetails = $userObj -> getUserDetailsById($user_id);
@@ -115,12 +115,12 @@
                           <div class="row">
                             <div class="col-md-6">
                               <div class="form-group aa-checkout-single-bill">
-                                <input type="text" placeholder="City / Town*" id="billCity" name="billCity" class="form-control" value="<?php echo $userDetails['bill_city']; ?>">
+                                <input type="text" placeholder="City*" id="billCity" name="billCity" class="form-control" value="<?php echo $userDetails['bill_city']; ?>">
                               </div>                             
                             </div>
                             <div class="col-md-6">
                               <div class="form-group aa-checkout-single-bill">
-                                <input type="text" placeholder="Region*" id="billRegion" name="billRegion" class="form-control" value="<?php echo $userDetails['bill_region']; ?>">
+                                <input type="text" placeholder="Suburb*" id="billRegion" name="billRegion" class="form-control" value="<?php echo $userDetails['bill_region']; ?>">
                               </div>
                             </div>
                           </div> 
@@ -128,13 +128,13 @@
                             <div class="col-md-6">
                               <div class="form-group aa-checkout-single-bill">
                                 <select id="billCountry" name="billCountry" class="form-control">
-                                  <option value="AUS" selected>Australia</option>
+                                  <option value="NZ" selected>New Zealand</option>
                                 </select>                                
                               </div>                             
                             </div>
                             <div class="col-md-6">
                               <div class="form-group aa-checkout-single-bill">
-                                <input type="text" placeholder="Postcode / ZIP*" id="billPostal" name="billPostal" class="form-control" value="<?php echo $userDetails['bill_postal_code']; ?>">
+                                <input type="text" placeholder="Postcode*" id="billPostal" name="billPostal" class="form-control" value="<?php echo $userDetails['bill_postal_code']; ?>">
                               </div>
                             </div>
                           </div>
@@ -218,7 +218,7 @@
                             <div class="col-md-6">
                               <div class="form-group aa-checkout-single-bill">
                                 <select id="delvCountry" name="delvCountry" class="form-control">
-                                  <option value="AUS" selected>Australia</option>
+                                  <option value="NZ" selected>New Zealand</option>
                                 </select>                                
                               </div>                             
                             </div>
@@ -262,7 +262,9 @@
 
                       $cart_summary = "";
                       $cart_items_html = "";
-                      $cart_item_count = 0;         
+                      $cart_item_count = 0;     
+
+                      $delivery_arr = array();    
             
                       if(count($cart_array) > 0){
                                   
@@ -283,15 +285,17 @@
                               //$total_item_count  += $prod_qty; 
 
                               $prod_array = array();
-                              $prod_array = $productObj -> loadProductByID($prod_id); 
+                              $prod_array = $itemObj -> loadItemByID($prod_id); 
 
                               if(count($prod_array) > 0){
 
-                                  $item_total = ($prod_qty * $prod_array['prod_price']);
+                                  $item_total = ($prod_qty * $prod_array['item_price']);
+                                  $delivery = $prod_array['delivery'];
+                                  array_push($delivery_arr, $delivery);
                                       
                                   echo "
                                       <tr>
-                                        <td><a href='index.php?page=product&pid=".$prod_id."'>".$prod_array['prod_name']."</a> <strong> x  ".$prod_qty."</strong></td>
+                                        <td><a href='index.php?page=product&pid=".$prod_id."'>".$prod_array['item_name']."</a> <strong> x  ".$prod_qty."</strong></td>
                                         <td>$".$item_total."</td>
                                       </tr>                        
                                       ";
@@ -302,7 +306,7 @@
                           }              
                       }
 
-                      $tax_amount = 0.00;//(7 / 100) * $total_price;
+                      $delivery_amount = max($delivery_arr);//(7 / 100) * $total_price;
                       
                       ?>
 
@@ -313,12 +317,13 @@
                           <td>$<?php echo $total_price; ?></td>
                         </tr>
                          <tr>
-                          <th>Tax</th>
-                          <td>$<?php echo $tax_amount; ?></td>
+                          <th>Delivery</th>
+                          <td>$<?php echo $delivery_amount; ?></td>
+                          <input type="hidden" name="delivery_amt" id="delivery_amt" value="<?php echo $delivery_amount; ?>" />
                         </tr>
                          <tr>
                           <th>Total</th>
-                          <td>$<?php echo ($total_price + $tax_amount); ?></td>
+                          <td>$<?php echo ($total_price + $delivery_amount); ?></td>
                         </tr>
                       </tfoot>
                     </table>
