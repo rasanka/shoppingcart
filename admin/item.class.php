@@ -16,11 +16,14 @@ class Item extends DB_Manager{
 		return $result;
 	}	
 			
-	function saveItem($itm_id,$name,$prod_id,$short_desc,$desc,$price,$stock,$ref_id,$delivery,$keywords,$status,$rating,$badge){
+	function saveItem($itm_id,$name,$prod_id,$short_desc,$desc,$price,$discount_price,$stock,$ref_id,$delivery,$keywords,$status,$rating,$badge){
 	
-		$query = " INSERT INTO tbl_items (item_id,item_name,short_desc,item_desc,item_prod,item_price,
+		if (empty($var)) {
+			$discount_price = 0;
+		}
+		$query = " INSERT INTO tbl_items (item_id,item_name,short_desc,item_desc,item_prod,item_price,item_discount_price,
 											 item_stock,ref_id,delivery,item_keywords,status,rating,badge)
-				   VALUES('".$itm_id."','".$name."','".$short_desc."','".$desc."', '".$prod_id."', ".$price.", ".$stock.", '".$ref_id."', ".$delivery.", '".$keywords."', '".$status."', ".$rating.", '".$badge."');  ";
+				   VALUES('".$itm_id."','".$name."','".$short_desc."','".$desc."', '".$prod_id."', ".$price.", ".$discount_price.", ".$stock.", '".$ref_id."', ".$delivery.", '".$keywords."', '".$status."', ".$rating.", '".$badge."');  ";
 			 
 		//$this -> logData($query);
 
@@ -53,7 +56,7 @@ class Item extends DB_Manager{
 		return $msg;
 	}	
 		
-	function updateItem($id,$name,$prod_id,$ref_id,$delivery,$short_desc,$desc,$price,$stock,$keywords,$status,$rating,$badge){
+	function updateItem($id,$name,$prod_id,$ref_id,$delivery,$short_desc,$desc,$price,$discount_price,$stock,$keywords,$status,$rating,$badge){
 	
 		$query = "  UPDATE tbl_items
 					SET item_name = '".$name."',
@@ -63,6 +66,7 @@ class Item extends DB_Manager{
 						ref_id = '".$ref_id."',
 						delivery = ".$delivery.",
 						item_price = ".$price.",
+						item_discount_price = ".$discount_price.",
 						item_stock = ".$stock.",
 						item_keywords = '".$keywords."',
 						status = '".$status."',
@@ -120,7 +124,7 @@ class Item extends DB_Manager{
 	
 	function getItemDetailsById($id){
 	
-		$query = "  SELECT item_name,item_desc,item_prod,item_price,item_stock,ref_id,delivery,item_keywords,status,short_desc,rating,badge 
+		$query = "  SELECT item_name,item_desc,item_prod,item_price,item_discount_price,item_stock,ref_id,delivery,item_keywords,status,short_desc,rating,badge 
 					FROM tbl_items
 					WHERE item_id = '".$id."'; ";
 				 
@@ -132,14 +136,15 @@ class Item extends DB_Manager{
 			"desc"=>$result[0][1],
 			"item_prod"=>$result[0][2],
 			"price"=>$result[0][3],
-			"stock"=>$result[0][4],
-			"ref_id"=>$result[0][5],
-			"delivery"=>$result[0][6],
-			"keywords"=>$result[0][7],
-			"status"=>$result[0][8],
-			"short_desc"=>$result[0][9],
-			"rating"=>$result[0][10],
-			"badge"=>$result[0][11]);
+			"discount_price"=>$result[0][4],
+			"stock"=>$result[0][5],
+			"ref_id"=>$result[0][6],
+			"delivery"=>$result[0][7],
+			"keywords"=>$result[0][8],
+			"status"=>$result[0][9],
+			"short_desc"=>$result[0][10],
+			"rating"=>$result[0][11],
+			"badge"=>$result[0][12]);
 		
 			return $details;
 		}else{
@@ -163,7 +168,7 @@ class Item extends DB_Manager{
 					AND UPPER(item_name) like UPPER('%".$name."%') AND UPPER(ref_id) like UPPER('%".$ref_id."%')
 					ORDER BY created_date; ";
 
-		$this -> logData($query);			
+		//$this -> logData($query);			
 		$result = "";
 		$result = $this -> executeQuery($query);	
 		

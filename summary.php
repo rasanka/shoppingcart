@@ -152,6 +152,7 @@
                         ";  ?>
                         <br/>
                         <div id="upload" onClick="startUpload();">Upload Deposit Slip</div>
+                        <br/>
                         <div id="loading_div"></div>
                         <ul id="files" ></ul>
                     <?php } ?>

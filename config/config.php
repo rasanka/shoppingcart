@@ -12,10 +12,10 @@ $USER = "root";
 $PASSWORD = "";
 
 //BANK ACCOUNT
-$ACCOUNT_NO="456546447";
+$ACCOUNT_NO="00-000000-000";
 $ACCOUNT_BSB="303-092";
 $ACCOUNT_NAME="PhoneRepairParts.co.nz pvt. Ltd";
-$BANK_NAME="Ausi Bank";
-$BRANCH_NAME="Huntingdale";
+$BANK_NAME="ASB";
+$BRANCH_NAME="Newmarket";
 
 ?>

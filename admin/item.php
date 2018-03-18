@@ -192,6 +192,7 @@ function save(){
 	var short_desc = document.getElementById("short_desc").value;
 	var description = CKEDITOR.instances.description.getData();
 	var price = document.getElementById("price").value;
+  var discount_price = document.getElementById("discount_price").value;
 	var stock = document.getElementById("stock").value;
 	var ref_id = document.getElementById("ref_id").value;
 	var delivery = document.getElementById("delivery").value;
@@ -202,7 +203,7 @@ function save(){
 
 	var urlString = "item.logic.php";
 	var parameters = "chksql=saveItem&item_id="+item_id+"&name="+escape(name)+"&prod_id="+product+"&short_desc="+escape(short_desc)+
-  "&desc="+escape(description)+"&price="+price+"&stock="+stock+"&ref_id="+delivery+"&delivery="+ref_id+"&keywords="+keywords+"&rating="+rating+"&badge="+badge+"&status="+status;	
+  "&desc="+escape(description)+"&price="+price+"&discount_price="+discount_price+"&stock="+stock+"&ref_id="+ref_id+"&delivery="+delivery+"&keywords="+keywords+"&rating="+rating+"&badge="+badge+"&status="+status;	
 
     //alert(parameters);	
 	var http = getHTTPObject();
@@ -491,6 +492,20 @@ function randomString() {
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Discount Price</td>
+                    <td><input type="text" name="discount_price" id="discount_price" class="body"></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>                  
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>

@@ -3,14 +3,14 @@ require_once ("config/config.php");
 require_once ("order.class.php");
 require_once ("cart.class.php");
 require_once ("mail_logic.class.php");
-require_once ("product.class.php");
+require_once ("item.class.php");
 	
 $m_chksql = $_GET['chksql'];
 
 $orderObj   = new Order();
 $cartObj = new Cart();
 $mailObj  = new MailLogic();
-$productObj = new Product();
+$productObj = new Item();
 
 if($m_chksql == "loadBankPaymentsToBeApproved"){	
 
@@ -134,7 +134,7 @@ if($m_chksql == "generate_payment_success_mail"){
     if(count($cart_array) > 0){
 
         $order_summary_tbl_start_html = "
-                    <table width='40%'  border='0' class='body'>
+                    <table width='40%'  border='1' class='body'>
                       <thead>
                         <tr>
                           <th align='left' colspan='2'>Product</th>
@@ -161,7 +161,7 @@ if($m_chksql == "generate_payment_success_mail"){
             $prod_qty = $item_array['qty'.$itemCount];
 
             $prod_array = array();
-            $prod_array = $productObj -> getProductDetailsById($prod_id); 
+            $prod_array = $productObj -> getItemDetailsById($prod_id); 
 
             if(count($prod_array) > 0){
 
@@ -172,7 +172,7 @@ if($m_chksql == "generate_payment_success_mail"){
                         <td colspan='2'>".$prod_array['name']."</td>
                         <td>".$prod_qty."</td>
                         <td>$".$prod_array['price']."</td>
-                        <td>$".$item_total."</td>
+                        <td>$".number_format((float)$item_total, 2, '.', '')."</td>
                     </tr>";
             }
 
@@ -183,13 +183,16 @@ if($m_chksql == "generate_payment_success_mail"){
         $order_summary_tbl_end_html = "
                     </tbody>        
                       <tfoot>
+					  	<tr> 
+						  <th colspan='5'>&nbsp;</th>
+						</tr>
                         <tr>                          
                           <th colspan='4'>Subtotal</th>
                           <td>$".$details['cart_total']."</td>
                         </tr>
                          <tr>
-                          <th colspan='4'>Tax</th>
-                          <td>$".$details['tax_amount']."</td>
+                          <th colspan='4'>Delivery</th>
+                          <td>$".$details['delivery_amount']."</td>
                         </tr>
                          <tr>
                           <th colspan='4'>Total</th>

@@ -104,7 +104,7 @@ class Order extends DB_Manager {
                     $billing_addr."','".$delivery_name."','".$delivery_company."','".$delivery_email."','".
                     $delivery_contact."','".$delivery_addr."','".$delivery_note."','".$pay_method."',now(),'".$status."'); ";
 
-        $this -> logData($query);
+        //$this -> logData($query);
 
         $result = $this -> executeInsertQuery($query);
         if($result) {

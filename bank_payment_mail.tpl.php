@@ -56,7 +56,7 @@
                               <tr>
                                 <td>&nbsp;</td>
                                 <td>Amount </td>
-                                <td>: $ ".$cart_total."</td>
+                                <td>: $ ".$order_total."</td>
                               </tr>
                             </table></td>
                           </tr>

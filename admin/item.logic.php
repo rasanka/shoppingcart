@@ -16,6 +16,7 @@ if($m_chksql == "saveItem"){
 	$short_desc= $_POST['short_desc'];
 	$desc= $_POST['desc'];
 	$price= $_POST['price'];
+	$discount_price=$_POST['discount_price'];
 	$stock= $_POST['stock'];
 	$ref_id= $_POST['ref_id'];
 	$delivery= $_POST['delivery'];
@@ -26,7 +27,7 @@ if($m_chksql == "saveItem"){
 
 	//$logObj -> logData($item_id."-".$prod_id."-".$desc."-".$price."-".$stock."-".$ref_id."-".$status);
 
-	$result = $itemObj -> saveItem($item_id, $name,$prod_id,$short_desc,$desc,$price,$stock,$ref_id,$delivery,$keywords,$status,$rating,$badge); 
+	$result = $itemObj -> saveItem($item_id, $name,$prod_id,$short_desc,$desc,$price,$discount_price,$stock,$ref_id,$delivery,$keywords,$status,$rating,$badge); 
 
 	$msg = 'ERROR';
 	if($result == 'SUCCESS') {
@@ -75,6 +76,7 @@ if($m_chksql == "updateItem"){
 	$short_desc= $_POST['short_desc'];
 	$desc= $_POST['desc'];
 	$price= $_POST['price'];
+	$discount_price=$_POST['discount_price'];
 	$stock= $_POST['stock'];
 	$ref_id= $_POST['ref_id'];
 	$delivery= $_POST['delivery'];
@@ -84,7 +86,7 @@ if($m_chksql == "updateItem"){
 	$badge= $_POST['badge'];
 
 	$msg = '';
-	$msg = $itemObj -> updateItem($id,$name,$prod_id,$ref_id,$delivery,$short_desc,$desc,$price,$stock,$keywords,$status,$rating,$badge); 
+	$msg = $itemObj -> updateItem($id,$name,$prod_id,$ref_id,$delivery,$short_desc,$desc,$price,$discount_price,$stock,$keywords,$status,$rating,$badge); 
 
 	if($msg == 'SUCCESS') {
 		// Deleting the product images and re-inserting during the update to get the latest

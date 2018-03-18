@@ -7,7 +7,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT user_id, total_price, created_datetime, cart_status
 					FROM tbl_cart
-					WHERE cart_id = ".$cart_id."; ";
+					WHERE cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -24,7 +24,7 @@ class Cart extends DB_Manager {
 	
 		$query = "  SELECT prod_id, qty, unit_price
 					FROM tbl_cart_items
-					WHERE cart_id = ".$cart_id."; ";
+					WHERE cart_id = '".$cart_id."'; ";
 				 
 		$result = "";
 		$result = $this -> executeQuery($query);	
