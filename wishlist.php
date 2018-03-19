@@ -52,7 +52,7 @@
         $wishlist_items_html = $wishlist_items_html. "
             <tr id='row".$itemCount."'>
                 <td><a pid=".$prod_id." rowid=".$itemCount." class='remove' href='#'><fa class='fa fa-close'></fa></a></td>
-                <td><a href='index.php?page=product&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='img'></a></td>
+                <td><a href='index.php?page=item&pid=".$prod_id."'><img width='250' height='300' src='item_images/".$prod_id."/".$prod_image['image_name']."' alt='img'></a></td>
                 <td><a class='aa-cart-title' href='index.php?page=item&pid=".$prod_id."'>".$prod_array['item_name']."</a></td>
                 <td>$".$prod_array['item_price']."</td>
                 <td>In Stock</td>

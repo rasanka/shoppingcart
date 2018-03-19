@@ -77,7 +77,7 @@ class Item extends DB_Manager {
 
 	function loadItemsByProduct($prod_id){
 	
-		$query = "  SELECT item_id,item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge
+		$query = "  SELECT item_id,item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge,item_discount_price
 					FROM tbl_items
 					WHERE item_prod = '".$prod_id."' and status = 'SHOW'; ";
 				 
@@ -100,6 +100,7 @@ class Item extends DB_Manager {
 			$details["short_desc".($i+1)] = $result[$i][8];
 			$details["rating".($i+1)] = $result[$i][9];
 			$details["badge".($i+1)] = $result[$i][10];
+			$details["item_discount_price".($i+1)] = $result[$i][11];		
 
 			$i +=1;
 		}
@@ -146,7 +147,7 @@ class Item extends DB_Manager {
 
 	function loadLatestItems(){
 	
-		$query = "  SELECT item_id,item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge 
+		$query = "  SELECT item_id,item_name,item_desc,item_prod,item_price,item_stock,ref_id,item_keywords,short_desc,rating,badge,item_discount_price
 					FROM tbl_items
 					WHERE status = 'SHOW'
 					ORDER BY created_date desc LIMIT 8; ";
@@ -170,6 +171,7 @@ class Item extends DB_Manager {
 			$details["short_desc".($i+1)] = $result[$i][8];
 			$details["rating".($i+1)] = $result[$i][9];
 			$details["badge".($i+1)] = $result[$i][10];
+			$details["item_discount_price".($i+1)] = $result[$i][11];
 
 			$i +=1;
 		}
@@ -181,7 +183,7 @@ class Item extends DB_Manager {
 
 	function loadTopRatedItems(){
 	
-		$query = "  SELECT item_id,item_name,item_desc,item_prod,item_price, item_stock,ref_id,item_keywords,short_desc,rating,badge 
+		$query = "  SELECT item_id,item_name,item_desc,item_prod,item_price, item_stock,ref_id,item_keywords,short_desc,rating,badge,item_discount_price 
 					FROM tbl_items
 					WHERE status = 'SHOW'
 					ORDER BY rating desc LIMIT 8; ";
@@ -205,6 +207,7 @@ class Item extends DB_Manager {
 			$details["short_desc".($i+1)] = $result[$i][8];
 			$details["rating".($i+1)] = $result[$i][9];
 			$details["badge".($i+1)] = $result[$i][10];
+			$details["item_discount_price".($i+1)] = $result[$i][11];
 
 			$i +=1;
 		}

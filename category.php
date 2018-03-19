@@ -7,21 +7,21 @@
               <li class="active">Category</li>
             </ol>
           </div>
-                <?php
-                  require_once("product.class.php");
+          <?php
+          require_once("product.class.php");
 				  require_once("item.class.php");
 				  require_once("category.class.php");
                 
-                  $productObj = new Product();
+          $productObj = new Product();
 				  $itemObj = new Item();
 				  $catObj = new Category();
 
-                  $cat_id = (isset($_GET['cat_id']) ? $_GET['cat_id'] : 1);
-                  $brand_id = (isset($_GET['brand_id']) ? $_GET['brand_id'] : 0);
+          $cat_id = (isset($_GET['cat_id']) ? $_GET['cat_id'] : 1);
+          $brand_id = (isset($_GET['brand_id']) ? $_GET['brand_id'] : 0);
 				  $prod_id = (isset($_GET['prod_id']) ? $_GET['prod_id'] : 1);
                 
-                  $products_html = "";
-                  $prod_array = array();
+          $products_html = "";
+          $prod_array = array();
 				  
 				  $page_heading = '';
 				  if(isset($_GET['prod_id'])){
@@ -105,11 +105,17 @@
 					if(isset($_GET['prod_id'])){
 						
 						// ITEMS-------------------------------------------				
-						while($j < (count($prod_array)/11)){
+						while($j < (count($prod_array)/12)){
 	
 						  $prod_image = $itemObj -> loadMainItemImage($prod_array['item_id'.$itemCount]);
-	
-						  // <p class='aa-product-descrip'>".$prod_array['product_desc'.$itemCount]."</p>        
+
+              $price_line = "";
+              if($prod_array['item_discount_price'.$itemCount] > 0) {
+                $price_line = "<span class='aa-product-price'>$".$prod_array['item_price'.$itemCount]."</span><span class='aa-product-price'><del>$".$prod_array['item_discount_price'.$itemCount]."</del></span>";
+              } else {
+                $price_line = "<span class='aa-product-price'>$".$prod_array['item_price'.$itemCount]."</span>";
+              }
+
 						  $products_html = $products_html." 
 							<li>
 							  <figure>
@@ -117,7 +123,7 @@
 								<a class='aa-add-card-btn' pid='".$prod_array['item_id'.$itemCount]."' pprice='".$prod_array['item_price'.$itemCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
 								<figcaption>
 								  <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$prod_array['item_id'.$itemCount]."'>".$prod_array['item_name'.$itemCount]."</a></h4>
-								  <span class='aa-product-price'>$".$prod_array['item_price'.$itemCount]."</span><span class='aa-product-price'><del>$".$prod_array['item_price'.$itemCount]."</del></span>                                                    
+								".$price_line."                                                      
 								</figcaption>
 							  </figure>                         
 							  <div class='aa-product-hvr-content'>
@@ -319,7 +325,7 @@
                             <a href='index.php?page=item&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$prod_id."/".$prod_image['image_name']."'></a>
                             <div class='aa-cartbox-info'>
                               <h4><a href='index.php?page=item&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
-                              <p>1 x $".$products['item_price'.$rowCount]."</p>
+                              <p>$".$products['item_price'.$rowCount]."</p>
                             </div>                    
                           </li>                          
 
@@ -369,7 +375,7 @@
                             <a href='index.php?page=item&pid=".$prod_id."' class='aa-cartbox-img'><img width='150' height='150' alt='img' src='item_images/".$prod_id."/".$prod_image['image_name']."'></a>
                             <div class='aa-cartbox-info'>
                               <h4><a href='index.php?page=item&pid=".$prod_id."'>".$products['item_name'.$rowCount]."</a></h4>
-                              <p>1 x $".$products['item_price'.$rowCount]."</p>
+                              <p>$".$products['item_price'.$rowCount]."</p>
                             </div>                    
                           </li>                          
 

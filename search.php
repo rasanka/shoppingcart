@@ -91,7 +91,7 @@
                             <a class='aa-product-img' href='#'><img width='250' height='300' src='item_images/".$prod_array['ref_id'.$itemCount]."/".$prod_image['image_name']."' alt='".$prod_array['item_name'.$itemCount]."'></a>
                             <a class='aa-add-card-btn' pid='".$prod_array['item_id'.$itemCount]."' pprice='".$prod_array['item_price'.$itemCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
                             <figcaption>
-                              <h4 class='aa-product-title'><a href='index.php?page=product&pid=".$prod_array['item_id'.$itemCount]."'>".$prod_array['item_name'.$itemCount]."</a></h4>
+                              <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$prod_array['item_id'.$itemCount]."'>".$prod_array['item_name'.$itemCount]."</a></h4>
                               <span class='aa-product-price'>$".$prod_array['item_price'.$itemCount]."</span><span class='aa-product-price'><del>$".$prod_array['item_price'.$itemCount]."</del></span>                                                    
                             </figcaption>
                           </figure>                         

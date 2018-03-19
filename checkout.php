@@ -295,7 +295,7 @@
                                       
                                   echo "
                                       <tr>
-                                        <td><a href='index.php?page=product&pid=".$prod_id."'>".$prod_array['item_name']."</a> <strong> x  ".$prod_qty."</strong></td>
+                                        <td><a href='index.php?page=item&pid=".$prod_id."'>".$prod_array['item_name']."</a> <strong> x  ".$prod_qty."</strong></td>
                                         <td>$".$item_total."</td>
                                       </tr>                        
                                       ";
