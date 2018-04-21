@@ -166,7 +166,7 @@ function save(){
 					document.getElementById("save_result").style.color = "red";
 					document.getElementById("save_result").innerHTML = "Error Occured! Please try Again.";
 				}
-				var t=setTimeout("resetPage()",3000);
+				//var t=setTimeout("resetPage()",3000);
 			}else{
 				alert("Error Occured : " + http.statusText);
 			}

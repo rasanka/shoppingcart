@@ -276,13 +276,19 @@
 
                   $i = 0;
                   $rowCount = 1;
-
-                            
-                  while($i < (count($products)/11)){
+             
+                  while($i < (count($products)/12)){
 
                     $prod_id = $products['item_id'.$rowCount];
                     $ref_id = $products['ref_id'.$rowCount];
                     $prod_image = $itemObj -> loadMainItemImage($prod_id);
+
+                    $price_line = "";
+                    if($products['item_discount_price'.$rowCount] > 0) {
+                      $price_line = "<span class='aa-product-price'>$".$products['item_price'.$rowCount]."</span><span class='aa-product-price'><del>$".$products['item_discount_price'.$rowCount]."</del></span>";
+                    } else {
+                      $price_line = "<span class='aa-product-price'>$".$products['item_price'.$rowCount]."</span>";
+                    }
                             
                     $popular_products_html = $popular_products_html."
                         <li>
@@ -291,7 +297,7 @@
                                 <a class='aa-add-card-btn' pid='".$item_id."' pprice='".$products['item_price'.$rowCount]."' href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>
                                 <figcaption>
                                     <h4 class='aa-product-title'><a href='index.php?page=item&pid=".$item_id."'>".$products['item_name'.$rowCount]."</a></h4>
-                                    <span class='aa-product-price'>$".$products['item_price'.$rowCount]."</span><span class='aa-product-price'><del>$".$products['item_price'.$rowCount]."</del></span>
+                                    ".$price_line."
                                 </figcaption>
                             </figure>                        
                             <div class='aa-product-hvr-content'>

@@ -239,7 +239,8 @@
               ?>
               </ul>
             </div>
-            <!-- single sidebar
+            <!-- single sidebar -->
+            <!--
             <div class="aa-sidebar-widget">
               <h3>Tags</h3>
               <div class="tag-cloud">
@@ -251,7 +252,8 @@
                 <a href="#">Head Phone</a>
                 <a href="#">Pen Drive</a>
               </div>
-            </div> -->
+            </div> 
+            -->
             
             <!-- single sidebar          
             <script type="text/javascript" src="js/nouislider.js"></script>
@@ -310,7 +312,7 @@
                     $i = 0;
                     $rowCount = 1;
                               
-                    while($i < (count($products)/11)){
+                    while($i < (count($products)/12)){
 
                       if($rowCount == 4) {
                         break;
@@ -360,7 +362,7 @@
                     $i = 0;
                     $rowCount = 1;
                               
-                    while($i < (count($products)/11)){
+                    while($i < (count($products)/12)){
 
                       if($rowCount == 4) {
                         break;

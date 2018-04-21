@@ -47,6 +47,22 @@
                 <div class="cellphone hidden-xs">
                   <p><span class="fa fa-phone"></span>021 164 6511</p>
                 </div>
+                <div class="cellphone hidden-xs">
+                  <p>
+                  <span class="fa fa-cc-mastercard"></span>
+                  <span class="fa fa-cc-visa"></span>
+                  <span class="fa fa-paypal"></span>
+                  <span class="fa fa-cc-discover"></span>
+                  </p>
+                </div>
+                <div class="cellphone hidden-xs">
+                  <p>
+                  <a href="#"><span class="fa fa-facebook"></span></a>
+                  <a href="#"><span class="fa fa-twitter"></span></a>
+                  <a href="#"><span class="fa fa-google-plus"></span></a>
+                  <a href="#"><span class="fa fa-youtube"></span></a>
+                  </p>
+                </div>
                 <!-- / cellphone -->
               </div>
               <!-- / header top left -->
