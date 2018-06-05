@@ -41,12 +41,12 @@ function init(){
 
 function setCursor(){
 	init();
-	loadPaymentsToBeApproved();
+	loadOrdersToBeShipped();
 }
 
-function loadPaymentsToBeApproved(){
+function loadOrdersToBeShipped(){
 	document.getElementById("item_list_div").innerHTML = "<img src='images/loading.gif'>";
-	var urlString = "order.logic.php?chksql=loadBankPaymentsToBeApproved";
+	var urlString = "order.logic.php?chksql=loadOrdersToBeShipped";
 	var http = getHTTPObject();
 	http.open("GET", urlString , true);
 	http.onreadystatechange = function() {
@@ -55,8 +55,6 @@ function loadPaymentsToBeApproved(){
 				var result = http.responseText;
 				document.getElementById("item_list_div").innerHTML = "";
 				document.getElementById("item_list_div").innerHTML = result;						
-			} else{
-				//alert("Error Occured 1: " + http.statusText);
 			}
 		}
 	}
@@ -65,12 +63,12 @@ function loadPaymentsToBeApproved(){
 
 
 function approve(lno){
-	var result = confirm("Are Your Sure! You want to approve this Transaction?");
+	var result = confirm("Are Your Sure! You want to Ship this Order?");
 	if(result){
 		var refId = document.getElementById("refId"+lno).value;    
-		var urlString = "order.logic.php?chksql=approveBankPayment&id="+refId;
-	  //alert(urlString);
-  	var http = getHTTPObject();
+		var urlString = "order.logic.php?chksql=shipOrder&id="+refId;
+	    //alert(urlString);
+  	    var http = getHTTPObject();
 		http.open("GET", urlString , true);
 		http.onreadystatechange = function() {
 			if (http.readyState == 4){
@@ -91,7 +89,7 @@ function approve(lno){
 }
 
 function sendApproveMail(refId){
-	var urlString = "order.logic.php?chksql=generate_payment_success_mail&id="+refId;
+	var urlString = "order.logic.php?chksql=generate_order_shipped_mail&id="+refId;
 	//alert(urlString);
 	var http = getHTTPObject();
 	http.open("GET", urlString , true);
@@ -100,7 +98,7 @@ function sendApproveMail(refId){
 			if (http.status == 200) {
 				var result = trim(http.responseText);
 				alert(result);
-				loadPaymentsToBeApproved();
+				loadOrdersToBeShipped();
 			} else{
 				//alert("Error Occured : " + http.statusText);
 			}
@@ -112,48 +110,7 @@ function sendApproveMail(refId){
 function resetPage(){
 	document.location.reload();
 }	
-
-function openpopup(id){ 
-      //Calculate Page width and height 
-      var pageWidth = window.innerWidth; 
-      var pageHeight = window.innerHeight; 
-      if (typeof pageWidth != "number"){ 
-      if (document.compatMode == "CSS1Compat"){ 
-            pageWidth = document.documentElement.clientWidth; 
-            pageHeight = document.documentElement.clientHeight; 
-      } else { 
-            pageWidth = document.body.clientWidth; 
-            pageHeight = document.body.clientHeight; 
-      } 
-      }  
-      //Make the background div tag visible... 
-      var divbg = document.getElementById('bg'); 
-      divbg.style.visibility = "visible"; 
-        
-      var divobj = document.getElementById(id); 
-      divobj.style.visibility = "visible"; 
-      if (navigator.appName=="Microsoft Internet Explorer") 
-      computedStyle = divobj.currentStyle; 
-      else computedStyle = document.defaultView.getComputedStyle(divobj, null); 
-      //Get Div width and height from StyleSheet 
-      var divWidth = computedStyle.width.replace('px', ''); 
-      var divHeight = computedStyle.height.replace('px', ''); 
-      var divLeft = (pageWidth - divWidth) / 2; 
-      var divTop = (pageHeight - divHeight) / 2; 
-      //Set Left and top coordinates for the div tag 
-      divobj.style.left = divLeft + "px"; 
-      divobj.style.top = divTop + "px"; 
-      //Put a Close button for closing the popped up Div tag 
-      if(divobj.innerHTML.indexOf("closepopup('" + id +"')") < 0 ) 
-      divobj.innerHTML = "<a href=\"#\" onclick=\"closepopup('" + id +"')\"><span class=\"close_button\">X</span></a>" + divobj.innerHTML; 
-} 
-
-function closepopup(id){ 
-      var divbg = document.getElementById('bg'); 
-      divbg.style.visibility = "hidden"; 
-      var divobj = document.getElementById(id); 
-      divobj.style.visibility = "hidden"; 
-} 				
+				
 </script>
 </head>				
 				
@@ -177,7 +134,7 @@ function closepopup(id){
                 <td>&nbsp;</td>
               </tr>
               <tr>
-                <td class="header_title" height="20">&nbsp;&nbsp;&nbsp;Bank Deposits to be Approved</td>
+                <td class="header_title" height="20">&nbsp;&nbsp;&nbsp;Order's to be Shipped</td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
@@ -192,7 +149,7 @@ function closepopup(id){
               <tr>
                 <td>
                 <fieldset class="fieldset">
-                <legend class="legend">Bank Deposits</legend>
+                <legend class="legend">Paid Orders</legend>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="body">
                   <tr>
                     <td width="1%">&nbsp;</td>

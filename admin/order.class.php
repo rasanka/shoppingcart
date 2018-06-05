@@ -85,12 +85,71 @@ class Order extends DB_Manager{
 		return $details;
 	}
 	
+	function getOrdersToBeShipped(){
+		// DATE_FORMAT(request_date,'%Y-%m-%d')
+		$query = "  SELECT order_id, cart_id, user_id, cart_total, delivery_amount, order_total, billing_name, billing_company, billing_email,
+                    billing_contact, billing_address, delivery_name, delivery_company, delivery_email, delivery_contact, delivery_address,
+                    delivery_note, payment_method, order_datetime, order_status
+                    FROM tbl_orders 
+                    WHERE order_status = 'PAYMENT_APPROVED' 
+                    ORDER BY order_datetime DESC;  ";
+									
+		$result = "";
+		$result = $this -> executeQuery($query);	
+		
+		$i = 0;
+		$details = array();
+		$details = "";
+		while ($i < count($result)) {
+			$details["order_id".($i+1)] = $result[$i][0];
+			$details["cart_id".($i+1)] = $result[$i][1];
+			$details["user_id".($i+1)] = $result[$i][2];
+			$details["cart_total".($i+1)] = $result[$i][3];
+            $details["delivery_amount".($i+1)] = $result[$i][4];
+            $details["order_total".($i+1)] = $result[$i][5];
+			$details["billing_name".($i+1)] = $result[$i][6];
+			$details["billing_company".($i+1)] = $result[$i][7];
+			$details["billing_email".($i+1)] = $result[$i][8];
+            $details["billing_contact".($i+1)] = $result[$i][9];
+			$details["billing_address".($i+1)] = $result[$i][10];
+			$details["delivery_name".($i+1)] = $result[$i][11];
+			$details["delivery_company".($i+1)] = $result[$i][12];
+            $details["delivery_email".($i+1)] = $result[$i][13];
+			$details["delivery_contact".($i+1)] = $result[$i][14];
+			$details["delivery_address".($i+1)] = $result[$i][15];
+			$details["delivery_note".($i+1)] = $result[$i][16];
+            $details["payment_method".($i+1)] = $result[$i][17];
+			$details["order_datetime".($i+1)] = $result[$i][18];
+			$details["order_status".($i+1)] = $result[$i][19];
+			
+			$i +=1;
+		}
+		return $details;
+	}	
 	
 	function approveBankPayment($id){
 	
 		$query = " 	UPDATE tbl_orders 
 					SET order_status = 'PAYMENT_APPROVED'				
 					WHERE order_id = '".$id."' AND payment_method = 'BANK'; ";			
+		
+		$result = "";
+		$result = $this -> executeUpdateQuery($query);
+			
+		$msg = "";
+		if($result)
+			$msg = 'SUCCESS';
+		else
+			$msg = 'ERROR';
+				
+		return $msg;	
+	}	
+
+	function shipOrder($id){
+	
+		$query = " 	UPDATE tbl_orders 
+					SET order_status = 'SHIPPED'				
+					WHERE order_id = '".$id."'; ";			
 		
 		$result = "";
 		$result = $this -> executeUpdateQuery($query);

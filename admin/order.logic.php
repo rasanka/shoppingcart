@@ -110,6 +110,17 @@ if($m_chksql == "approveBankPayment"){
 
 }
 
+if($m_chksql == "shipOrder"){	
+
+	$id= $_GET['id'];
+
+	$msg = '';
+	$msg = $orderObj -> shipOrder($id); 
+
+	echo $msg;	
+
+}
+
 if($m_chksql == "generate_payment_success_mail"){
 
 	$id = $_GET['id'];
@@ -212,6 +223,81 @@ if($m_chksql == "generate_payment_success_mail"){
 		
 	$final_msg = $mailObj -> prepareHtmlMail($html);
 	$subject = 'PhoneRepairParts.co.nz Payment Successfull.';
+		
+	if (mail($details['email'], $subject, $final_msg['multipart'], $final_msg['headers'])) {			
+		echo "Email sent Successfully!";
+	} else {
+		echo "Message delivery failed!";
+	}		
+}
+
+if($m_chksql == "loadOrdersToBeShipped"){	
+
+	$order_details = array();	
+	$order_details = $orderObj -> getOrdersToBeShipped();  
+	
+	if(count($order_details) > 1){
+	
+        // <th width='15%' align='left'>Transaction ID</td>
+		$m_out = $m_out."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='body'>
+						  <tr class='heading' height='20'>
+							<th width='15%' align='left'>Order ID</td>							
+							<th width='55%' align='left'>Address</td>
+							<th width='20%' align='left'>Paid Date</td>
+							<th width='10%'>Approve</td>
+						  </tr> ";
+		
+		$num = 0;
+		$color = "";
+		$rowCount = 1;
+		$i = 0;
+		
+		while($i < (count($order_details)/20)){
+
+				$m_out = $m_out."<tr height='20' onMouseOver=this.className='highlight' onMouseOut=this.className='normal'>  
+									<td>".$order_details['order_id'.$rowCount]."</td> 
+									<td>".$order_details['delivery_address'.$rowCount]."</td>
+									<td>".$order_details['order_datetime'.$rowCount]."</td> 
+									<td align='center'><input type='checkbox' name='app_check".$rowCount."' id='app_check".$rowCount."' onClick='approve(".$rowCount.");'></td>
+									<input type='hidden' name='refId".$rowCount."' id='refId".$rowCount."' value='".$order_details['order_id'.$rowCount]."'>
+								</tr> ";
+			$rowCount += 1;		
+			$i += 1;			
+		}
+		
+		
+				
+		$m_out = $m_out."</table>";						
+											
+	} else {
+		$m_out = $m_out."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='body'> ".
+				 " <tr>  ".
+				 "	<td>&nbsp;</td> ".
+				 " </tr> ".		
+				 " <tr height='20'>  ".
+				 "	<td align='center'>No Records Found!</td> ".
+				 " </tr> ".
+				 " <tr>  ".
+				 "	<td>&nbsp;</td> ".
+				 " </tr> ".				 
+				 "</table>";
+	}
+	echo $m_out;		
+}
+
+if($m_chksql == "generate_order_shipped_mail"){
+
+	$id = $_GET['id'];
+
+	$details = array();	
+    $details = $orderObj -> loadOrderDetailsById($id);
+
+ 	$html = "";
+	require_once("order_shipped_mail.tpl.php");
+	$html = $order_shipped_mail;			
+		
+	$final_msg = $mailObj -> prepareHtmlMail($html);
+	$subject = 'PhoneRepairParts.co.nz Order Shipped.';
 		
 	if (mail($details['email'], $subject, $final_msg['multipart'], $final_msg['headers'])) {			
 		echo "Email sent Successfully!";

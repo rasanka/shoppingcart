@@ -13,13 +13,18 @@ class Common_Functions extends DB_Manager{
 					"		<ul> ".
 					"		<li><a href='approve_payment.php'>Approve Payment</a></li> ".
 					"		</ul> ".
-					"	</li> ".												
+					"	</li> ".
+					"	<li><a href='#'>Shipping</a> ".
+					"		<ul> ".
+					"		<li><a href='ship_orders.php'>Order's to Ship</a></li> ".
+					"		</ul> ".
+					"	</li> ".																	
 					"	<li><a href='#' >Reports</a> ".
-					// "		<ul> ".
-					// "		<li><a href='members_report.php'>Users Report</a></li> ".
-					//"		<li><a href='visitors_report.php'>Visitors Report</a></li> ".
+					"		<ul> ".
+					"		<li><a href='search_orders.php'>Search Orders</a></li> ".
+					"		<li><a href='#'>Registered Users</a></li> ".
 					//"		<li><a href='email_report.php'>Email Report</a></li> ".
-					// "		</ul> ".
+					"		</ul> ".
 					"	</li> ".	
 					// "	<li><a href='#'>Articles</a> ".
 					// "		<ul> ".
