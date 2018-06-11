@@ -324,10 +324,10 @@ if($_POST['chksql'] == "searchOrders"){
 	
 		$m_out = $m_out."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='body'>
 						  <tr class='heading' height='20'>
-							<th width='10%' align='left'>Order ID</td>
-							<th width='30%' align='left'>Total</td>
-							<th width='20%' align='left'>Status</td>
-							<th width='40%' align='left'>Order Date</td>
+							<th width='25%' align='left'>Order ID</td>
+							<th width='25%' align='left'>Total</td>
+							<th width='25%' align='left'>Status</td>
+							<th width='25%' align='left'>Order Date</td>
 						  </tr> ";
 		
 		$num = 0;
