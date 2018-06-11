@@ -63,94 +63,35 @@ function setDefaultDate(){
 	document.getElementById("to_date").value = month+"/"+day+"/"+year;
 }
 
-function loadProductList(){
-	var urlString = "product.logic.php";
-	var parameters = "chksql=loadProductList";
-	
+function searchOrders(){
+	var orderId = document.getElementById("order_id").value;
+  var orderState = document.getElementById("order_state").value;
+  var fromDate = document.getElementById("from_date").value;
+  var toDate = document.getElementById("to_date").value;
+		
+	document.getElementById("order_list_div").innerHTML = "<img src='images/loading.gif'>";
+	var urlString = "order.logic.php";
+  var parameters = "chksql=searchOrders&id="+orderId+"&state="+orderState+"&fromDate="+fromDate+"&toDate="+toDate;
+  //alert(parameters);
 	var http = getHTTPObject();
 	http.open("POST", urlString , true);
-	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
 	http.onreadystatechange = function() {
 		if (http.readyState == 4){
 			if (http.status == 200) {
-				document.getElementById("products_div").innerHTML = http.responseText;
-			}else{
+				var result = http.responseText;
+        //alert(result);
+				document.getElementById("search_result_div").style.display="inline";
+				document.getElementById("order_list_div").innerHTML = "";
+				document.getElementById("order_list_div").innerHTML = result;						
+			} 
+			else{
 				alert("Error Occured : " + http.statusText);
 			}
 		}
 	}
-	http.send(parameters); 		
-}
-
-function deleteItem(pid){
-  alert(pid);
-	var product = pid;
-	var result = confirm("Are You Sure! You want to delete this Product?");
-	if(result){
-		document.getElementById("delete_result").innerHTML = "<img src='images/loading.gif'>";
-		var urlString = "item.logic.php";
-		var parameters = "chksql=deleteItem&id="+product;
-		//alert(urlString);			
-		var http = getHTTPObject();
-		http.open("POST", urlString , true);
-		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-		http.onreadystatechange = function() {
-			if (http.readyState == 4){
-				if (http.status == 200) {
-					var result = http.responseText;
-					document.getElementById("delete_result").innerHTML = "";
-					if(result.indexOf("SUCCESS") > -1){
-						document.getElementById("delete_result").style.color = "blue";
-						document.getElementById("delete_result").innerHTML = "Product Deleted Successfully!";		
-    					//init();					
-					}else{
-						document.getElementById("delete_result").style.color = "red";
-						document.getElementById("delete_result").innerHTML = "Error Occured! Please try Again.";
-					}
-					//var t=setTimeout("resetPage()",3000);
-          searchItems();
-				}
-			}
-		}
-		http.send(parameters); 	
-	}
-}
-
-function searchItems(){
-	var name = document.getElementById("name").value;
-  var product = document.getElementById("products").value;
-	//var brand = document.getElementById("brands").value;
-  var ref_id = document.getElementById("ref_id").value;
-	
-	if(product == "-"){
-		inlineMsg('products','<strong>Error</strong><br />Please select the Product!',2);
-    	status = false;
-	} else {		
-		document.getElementById("product_list_div").innerHTML = "<img src='images/loading.gif'>";
-		var urlString = "item.logic.php";
-    var parameters = "chksql=searchItems&name="+name+"&prod_id="+product+"&ref_id="+ref_id;
-		//alert(parameters);
-		var http = getHTTPObject();
-		http.open("POST", urlString , true);
-        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-		http.onreadystatechange = function() {
-			if (http.readyState == 4){
-				if (http.status == 200) {
-					var result = http.responseText;
-					document.getElementById("search_result_div").style.display="inline";
-					document.getElementById("product_list_div").innerHTML = "";
-					document.getElementById("product_list_div").innerHTML = result;						
-				} 
-				else{
-					alert("Error Occured : " + http.statusText);
-				}
-			}
-		}
-		http.send(parameters);				
-	}
+	http.send(parameters);				
 }
 
 function resetPage(){
@@ -232,6 +173,22 @@ function resetPage(){
 
                   <tr>
                     <td>&nbsp;</td>
+                    <td colspan="5"><hr/></td>
+                    <td>&nbsp;</td>
+                  </tr>  
+
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>                   
+
+                  <tr>
+                    <td>&nbsp;</td>
                     <td>From Date</td>
                     <td><input name="from_date" type="text" class="body" id="from_date"></td>
                     <td>&nbsp;</td>
@@ -253,7 +210,7 @@ function resetPage(){
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td><input type="button" name="submit2" id="submit2" value="Search Orders" class="body" onClick="searchOrders();"></td>
+                    <td><input type="button" name="searchButton" id="searchButton" value="Search Orders" class="body" onClick="searchOrders();"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -292,7 +249,7 @@ function resetPage(){
                   </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td><div id="product_list_div"></div></td>
+                    <td><div id="order_list_div"></div></td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr>

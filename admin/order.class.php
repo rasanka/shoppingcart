@@ -51,6 +51,8 @@ class Order extends DB_Manager{
                     WHERE payment_method = 'BANK' AND 
                           order_status = 'PENDING_APPROVAL' 
                     ORDER BY order_datetime DESC;  ";
+
+		//$this -> logData($query);
 									
 		$result = "";
 		$result = $this -> executeQuery($query);	
@@ -161,6 +163,35 @@ class Order extends DB_Manager{
 			$msg = 'ERROR';
 				
 		return $msg;	
+	}
+
+	function searchOrders($orderId,$orderState,$fromDate,$toDate) {
+		if($orderState == "-") {
+			$orderState = "";
+		}
+		
+		$query = "  SELECT order_id, order_total, order_status, order_datetime
+					FROM tbl_orders
+					WHERE order_id like '%".$orderId."%' AND order_status like '%".$orderState."%'
+					AND DATE_FORMAT(order_datetime, '%Y-%m-01') >= '".$this -> dateconvert($fromDate,1)."' 
+					AND DATE_FORMAT(order_datetime, '%Y-%m-01') <= '".$this -> dateconvert($toDate,1)."' ; ";
+
+		//$this -> logData($query);		
+		$result = "";
+		$result = $this -> executeQuery($query);	
+		
+		$i = 0;
+		$details = array();
+		$details = "";
+		while ($i < count($result)) {
+			$details["order_id".($i+1)] = $result[$i][0];
+			$details["order_total".($i+1)] = $result[$i][1];
+			$details["order_status".($i+1)] = $result[$i][2];
+			$details["order_datetime".($i+1)] = $result[$i][3];
+			
+			$i +=1;
+		}
+		return $details;
 	}	
 }
 ?>

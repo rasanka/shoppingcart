@@ -4,6 +4,7 @@ require_once ("order.class.php");
 require_once ("cart.class.php");
 require_once ("mail_logic.class.php");
 require_once ("item.class.php");
+require_once ("common.class.php");
 	
 $m_chksql = $_GET['chksql'];
 
@@ -11,6 +12,7 @@ $orderObj   = new Order();
 $cartObj = new Cart();
 $mailObj  = new MailLogic();
 $productObj = new Item();
+$commonObj = new Common_Functions();
 
 if($m_chksql == "loadBankPaymentsToBeApproved"){	
 
@@ -304,6 +306,64 @@ if($m_chksql == "generate_order_shipped_mail"){
 	} else {
 		echo "Message delivery failed!";
 	}		
+}
+
+if($_POST['chksql'] == "searchOrders"){	
+
+	$orderId = $_POST['id'];
+	$orderState = $_POST['state'];
+	$fromDate = $_POST['fromDate'];
+	$toDate = $_POST['toDate'];
+
+	//$commonObj -> logData($orderId);
+
+	$order_details = array();	
+	$order_details = $orderObj -> searchOrders($orderId,$orderState,$fromDate,$toDate);  
+	
+	if(count($order_details) > 1){
+	
+		$m_out = $m_out."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='body'>
+						  <tr class='heading' height='20'>
+							<th width='10%' align='left'>Order ID</td>
+							<th width='30%' align='left'>Total</td>
+							<th width='20%' align='left'>Status</td>
+							<th width='40%' align='left'>Order Date</td>
+						  </tr> ";
+		
+		$num = 0;
+		$color = "";
+		$rowCount = 1;
+		$i = 0;
+
+		while($i < (count($order_details)/4)){
+
+			$m_out = $m_out."<tr height='20' style='color:#009900' onMouseOver=this.className='reorderhighlight' onMouseOut=this.className='reordernormal'>   
+								<td>".$order_details['order_id'.$rowCount]."</td> 
+								<td>".$order_details['order_total'.$rowCount]."</td> 
+								<td>".$order_details['order_status'.$rowCount]."</td> 
+								<td>".$order_details['order_datetime'.$rowCount]."</td> 
+							</tr>  ";	
+				
+			$rowCount += 1;		
+			$i += 1;			
+		}
+				
+		$m_out = $m_out."</table>";						
+											
+	} else {
+		$m_out = $m_out."<table width='100%' border='0' cellspacing='0' cellpadding='0' class='body'> ".
+				 " <tr>  ".
+				 "	<td>&nbsp;</td> ".
+				 " </tr> ".		
+				 " <tr height='20'>  ".
+				 "	<td align='center'>No Records Found!</td> ".
+				 " </tr> ".
+				 " <tr>  ".
+				 "	<td>&nbsp;</td> ".
+				 " </tr> ".				 
+				 "</table>";
+	}
+	echo $m_out;		
 }
 
 ?>
